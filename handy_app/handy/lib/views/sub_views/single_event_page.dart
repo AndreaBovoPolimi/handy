@@ -1,18 +1,28 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
-
-import '../event_page.dart';
-import 'my_event_page.dart';
+import 'package:maps_launcher/maps_launcher.dart';
 
 class SingleEventPage extends StatefulWidget {
+  bool _isRegisterable = true;
+
+  SingleEventPage(bool isRegisterable) {
+    this._isRegisterable = isRegisterable;
+  }
+
   @override
   _SingleEventPageState createState() {
-    return _SingleEventPageState();
+    return _SingleEventPageState(_isRegisterable);
   }
 }
 
 class _SingleEventPageState extends State<SingleEventPage> {
+  bool _isRegisterable = true;
+
+  _SingleEventPageState(bool isRegisterable) {
+    this._isRegisterable = isRegisterable;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -88,7 +98,9 @@ class _SingleEventPageState extends State<SingleEventPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pop(context);
+                      MapsLauncher.launchQuery(
+                          'Via Giuseppe Ponzio, 34/5, 20133 Milano MI');
+                      //MapsLauncher.launchCoordinates(37.4220041, -122.0862462);
                     },
                     child: Column(
                       children: [
@@ -171,31 +183,33 @@ class _SingleEventPageState extends State<SingleEventPage> {
                   )
                 ]),
               )),
-          Positioned(
-            top: 810,
-            left: 195,
-            child: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Card(
-                  color: Colors.white,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(13.0),
+          _isRegisterable
+              ? Positioned(
+                  top: 810,
+                  left: 195,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Card(
+                        color: Colors.white,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(13.0),
+                        ),
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          child: Center(
+                            child: Text("Register",
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: HexColor("#FF5722"),
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        )),
                   ),
-                  child: Container(
-                    height: 50,
-                    width: 200,
-                    child: Center(
-                      child: Text("Register",
-                          style: TextStyle(
-                              fontSize: 22,
-                              color: HexColor("#FF5722"),
-                              fontWeight: FontWeight.bold)),
-                    ),
-                  )),
-            ),
-          )
+                )
+              : Text(""),
         ]));
   }
 }

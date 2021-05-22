@@ -18,6 +18,16 @@ class _EventPageState extends State<EventPage> {
   bool isConferenceOn = false;
   bool isRoundtableOn = false;
 
+  bool isGroup = true;
+  final searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    searchController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -35,7 +45,11 @@ class _EventPageState extends State<EventPage> {
               style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
             ),
           ),
-          GestureDetector(onTap: () {}, child: topButtonSearch()),
+          GestureDetector(
+              onTap: () {
+                setState(() => isGroup ? isGroup = false : isGroup = true);
+              },
+              child: topButtonSearch()),
           GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -43,7 +57,7 @@ class _EventPageState extends State<EventPage> {
                   MaterialPageRoute(builder: (context) => MyEventPage()),
                 );
               },
-              child: topButtonPath('assets/my_events.jpeg')),
+              child: topButtonPath('assets/my_events.png')),
         ]),
       ),
       child: Container(
@@ -51,69 +65,104 @@ class _EventPageState extends State<EventPage> {
         child: ListView(
           padding: EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
           children: [
-            Column(
-              children: [
-                Row(children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() =>
-                          isMusicOn ? isMusicOn = false : isMusicOn = true);
-                    },
-                    child: Container(
-                      child: topCard("assets/music.png", Colors.black,
-                          HexColor("#ACCCFF"), "MUSIC", isMusicOn),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() =>
-                          isSportOn ? isSportOn = false : isSportOn = true);
-                    },
-                    child: topCard("assets/man.png", Colors.black,
-                        HexColor("#FFC8AC"), "SPORT", isSportOn),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() => isWorkshopOn
-                          ? isWorkshopOn = false
-                          : isWorkshopOn = true);
-                    },
-                    child: topCard("assets/laptop.png", Colors.black,
-                        HexColor("#D75757"), "WORKSHOP", isWorkshopOn),
-                  ),
-                ]),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() => isConferenceOn
-                            ? isConferenceOn = false
-                            : isConferenceOn = true);
-                      },
+            isGroup
+                ? Column(
+                    children: [
+                      Row(children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() => isMusicOn
+                                ? isMusicOn = false
+                                : isMusicOn = true);
+                          },
+                          child: Container(
+                            child: topCard("assets/music.png", Colors.black,
+                                HexColor("#ACCCFF"), "MUSIC", isMusicOn),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() => isSportOn
+                                ? isSportOn = false
+                                : isSportOn = true);
+                          },
+                          child: topCard("assets/man.png", Colors.black,
+                              HexColor("#FFC8AC"), "SPORT", isSportOn),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() => isWorkshopOn
+                                ? isWorkshopOn = false
+                                : isWorkshopOn = true);
+                          },
+                          child: topCard("assets/laptop.png", Colors.black,
+                              HexColor("#D75757"), "WORKSHOP", isWorkshopOn),
+                        ),
+                      ]),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() => isConferenceOn
+                                  ? isConferenceOn = false
+                                  : isConferenceOn = true);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 60, top: 0, right: 0, bottom: 0),
+                              child: topCard(
+                                  "assets/mic.png",
+                                  Colors.black,
+                                  HexColor("#FFC3D8"),
+                                  "CONFERENCE",
+                                  isConferenceOn),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() => isRoundtableOn
+                                  ? isRoundtableOn = false
+                                  : isRoundtableOn = true);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 0, top: 0, right: 60, bottom: 0),
+                              child: topCard(
+                                  "assets/hand.png",
+                                  Colors.black,
+                                  HexColor("#739B53"),
+                                  "ROUNDTABLE",
+                                  isRoundtableOn),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : Padding(
+                    padding:
+                        EdgeInsets.only(left: 0, top: 38, right: 0, bottom: 38),
+                    child: Center(
                       child: Container(
-                        margin: EdgeInsets.only(
-                            left: 60, top: 0, right: 0, bottom: 0),
-                        child: topCard("assets/mic.png", Colors.black,
-                            HexColor("#FFC3D8"), "CONFERENCE", isConferenceOn),
+                        width: 365,
+                        height: 44,
+                        child: CupertinoTextField(
+                          controller: searchController,
+                          placeholder: "Search...",
+                          cursorColor: HexColor("#FF5722"),
+                          clearButtonMode: OverlayVisibilityMode.editing,
+                          prefix: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Image(
+                                image: AssetImage('assets/search_events.png'),
+                                width: 16,
+                                height: 16),
+                          ),
+                          prefixMode: OverlayVisibilityMode.always,
+                        ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() => isRoundtableOn
-                            ? isRoundtableOn = false
-                            : isRoundtableOn = true);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            left: 0, top: 0, right: 60, bottom: 0),
-                        child: topCard("assets/hand.png", Colors.black,
-                            HexColor("#739B53"), "ROUNDTABLE", isRoundtableOn),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
             Container(
               margin: EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
               child: Text(
@@ -139,7 +188,8 @@ class _EventPageState extends State<EventPage> {
       height: 50,
       child: Center(
           child: Image(
-              image: AssetImage('assets/search_events.jpeg'),
+              image: AssetImage(
+                  isGroup ? 'assets/search_events.png' : 'assets/my_group.png'),
               width: 16,
               height: 16)),
       decoration: decorationShadow(),
@@ -231,7 +281,7 @@ class _EventPageState extends State<EventPage> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) => SingleEventPage()),
+          MaterialPageRoute(builder: (context) => SingleEventPage(true)),
         );
       },
       child: Container(

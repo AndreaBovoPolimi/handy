@@ -22,7 +22,7 @@ let options = {
         type: 'apiKey',
         in: 'header',
         name: 'Authorization',
-        description: '',
+        description: 'apiKey',
       },
     },
   },

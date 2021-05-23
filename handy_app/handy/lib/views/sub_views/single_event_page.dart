@@ -1,26 +1,34 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:handy/models/events.dart';
+import 'package:handy/services/external_API.dart';
+import 'package:handy/utils/category.dart';
+import 'package:handy/utils/date.dart';
 import 'package:hexcolor/hexcolor.dart';
 import 'package:maps_launcher/maps_launcher.dart';
 
 class SingleEventPage extends StatefulWidget {
   bool _isRegisterable = true;
+  Event? _event;
 
-  SingleEventPage(bool isRegisterable) {
+  SingleEventPage(bool isRegisterable, Event event) {
     this._isRegisterable = isRegisterable;
+    this._event = event;
   }
 
   @override
   _SingleEventPageState createState() {
-    return _SingleEventPageState(_isRegisterable);
+    return _SingleEventPageState(_isRegisterable, _event!);
   }
 }
 
 class _SingleEventPageState extends State<SingleEventPage> {
   bool _isRegisterable = true;
+  Event? _event;
 
-  _SingleEventPageState(bool isRegisterable) {
+  _SingleEventPageState(bool isRegisterable, Event event) {
     this._isRegisterable = isRegisterable;
+    this._event = event;
   }
 
   @override
@@ -31,10 +39,10 @@ class _SingleEventPageState extends State<SingleEventPage> {
           Container(
             height: 564,
             width: 700,
-            child: Image(
-              image: AssetImage('assets/conference_big.png'),
-              fit: BoxFit.contain,
-              alignment: Alignment.topCenter,
+            child: Image.network(
+              _event!.url,
+              fit: BoxFit.fitHeight,
+              alignment: Alignment.centerRight,
             ),
           ),
           Positioned(
@@ -54,7 +62,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
               top: 494,
               left: 0,
               child: Opacity(
-                opacity: 0.9,
+                opacity: 1,
                 child: Container(
                   width: 420,
                   height: 70,
@@ -76,8 +84,11 @@ class _SingleEventPageState extends State<SingleEventPage> {
                     padding: const EdgeInsets.all(5.0),
                     child: Container(
                       width: 420,
-                      child: Text("Inside the mind of a master procrastinator",
-                          style: TextStyle(fontSize: 28, color: Colors.white)),
+                      child: Text(_event!.title,
+                          style: TextStyle(
+                              fontSize: 28,
+                              color: Colors.white,
+                              fontFamily: 'NunitoBold')),
                     ),
                   ),
                   Padding(
@@ -94,7 +105,19 @@ class _SingleEventPageState extends State<SingleEventPage> {
                           child: Container(
                             width: 420,
                             child: Text(
-                                "Saturday, 15 May 2021 - 4:00PM - 5:00PM",
+                                weeks[_event!.dateTimeStart.weekday - 1] +
+                                    " " +
+                                    months[_event!.dateTimeStart.month - 1] +
+                                    " " +
+                                    _event!.dateTimeStart.day.toString() +
+                                    ", " +
+                                    _event!.dateTimeStart.hour.toString() +
+                                    ":" +
+                                    _event!.dateTimeStart.minute.toString() +
+                                    " - " +
+                                    _event!.dateTimeEnd.hour.toString() +
+                                    ":" +
+                                    _event!.dateTimeEnd.minute.toString(),
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.white)),
                           ),
@@ -104,8 +127,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      MapsLauncher.launchQuery(
-                          'Via Giuseppe Ponzio, 34/5, 20133 Milano MI');
+                      MapsLauncher.launchQuery(_event!.street);
                       //MapsLauncher.launchCoordinates(37.4220041, -122.0862462);
                     },
                     child: Column(
@@ -124,7 +146,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: Container(
                                   width: 420,
-                                  child: Text("Conference Room Emilio Gatti",
+                                  child: Text(_event!.place,
                                       style: TextStyle(
                                           fontSize: 14, color: Colors.white)),
                                 ),
@@ -137,8 +159,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                                 left: 24, top: 0, right: 0, bottom: 0),
                             child: Container(
                               width: 420,
-                              child: Text(
-                                  "Via Giuseppe Ponzio, 34/5, 20133 Milano MI",
+                              child: Text(_event!.street,
                                   style: TextStyle(
                                       fontSize: 10, color: Colors.white54)),
                             )),
@@ -150,7 +171,9 @@ class _SingleEventPageState extends State<SingleEventPage> {
                     child: Row(
                       children: [
                         Image(
-                          image: AssetImage('assets/mic.png'),
+                          image: AssetImage(
+                              mapCategory[_event!.category.toUpperCase()]
+                                  .toString()),
                           width: 20,
                           height: 20,
                         ),
@@ -158,7 +181,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                           padding: const EdgeInsets.all(5.0),
                           child: Container(
                             width: 420,
-                            child: Text("Conference",
+                            child: Text(_event!.category,
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.white)),
                           ),
@@ -179,7 +202,10 @@ class _SingleEventPageState extends State<SingleEventPage> {
                           padding: const EdgeInsets.all(5.0),
                           child: Container(
                             width: 420,
-                            child: Text("free",
+                            child: Text(
+                                _event!.price == 0
+                                    ? "Free"
+                                    : "€" + _event!.price.toString(),
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.white)),
                           ),
@@ -194,7 +220,8 @@ class _SingleEventPageState extends State<SingleEventPage> {
                   top: 810,
                   left: 195,
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      await postEventSubscription(_event!.id);
                       Navigator.pop(context);
                     },
                     child: Card(
@@ -219,7 +246,8 @@ class _SingleEventPageState extends State<SingleEventPage> {
                   top: 810,
                   left: 195,
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
+                      await deleteEventSubscription(_event!.id);
                       Navigator.pop(context);
                     },
                     child: Card(

@@ -1,5 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:handy/models/events.dart';
+import 'package:handy/services/external_API.dart';
+import 'package:handy/utils/category.dart';
+import 'package:handy/utils/date.dart';
 import 'package:handy/views/sub_views/single_event_page.dart';
 import 'package:hexcolor/hexcolor.dart';
 
@@ -11,15 +15,32 @@ class MyEventPage extends StatefulWidget {
 }
 
 class _MyEventPageState extends State<MyEventPage> {
-  bool isMusicOn = false;
-  bool isSportOn = false;
-  bool isWorkshopOn = false;
-  bool isConferenceOn = false;
-  bool isRoundtableOn = false;
+  bool isLoaded = false;
+
+  late Events events;
+
+  @override
+  void initState() {
+    getEvents();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed
+    super.dispose();
+  }
+
+  void getEvents() async {
+    events = await getAllMyEvents();
+    setState(() {
+      isLoaded = true;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
+        backgroundColor: HexColor("#F6F8F8"),
         navigationBar: CupertinoNavigationBar(
           leading: GestureDetector(
               onTap: () {
@@ -43,33 +64,37 @@ class _MyEventPageState extends State<MyEventPage> {
           ),
         ),
         child: Container(
-            color: HexColor("#F6F8F8"),
-            child: ListView(
-                padding: EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
-                children: [
-                  myEventsCard(),
-                  myEventsCard(),
-                  myEventsCard(),
-                  myEventsCard()
-                ])));
+          color: HexColor("#F6F8F8"),
+          child: isLoaded
+              ? ListView.builder(
+                  shrinkWrap: true,
+                  padding:
+                      EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
+                  itemCount: events.events.length,
+                  itemBuilder: (context, index) {
+                    return myEventsCard(events.events[index]);
+                  })
+              : SizedBox.shrink(),
+        ));
   }
 
-  Widget myEventsCard() {
+  Widget myEventsCard(Event event) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) => SingleEventPage(false)),
+          MaterialPageRoute(
+              builder: (context) => SingleEventPage(false, event)),
         );
       },
       child: Container(
-        padding: const EdgeInsets.all(10.0),
+        padding: const EdgeInsets.all(8.0),
         child: Row(
           children: [
             Column(
               children: [
                 Container(
                   padding: EdgeInsets.all(8),
-                  child: Text("MAY",
+                  child: Text(months[event.dateTimeStart.month - 1],
                       style: TextStyle(
                           fontSize: 10.5, color: HexColor("#FF5722"))),
                 ),
@@ -83,12 +108,12 @@ class _MyEventPageState extends State<MyEventPage> {
                     children: [
                       Container(
                           padding: EdgeInsets.all(8),
-                          child: Text("15",
+                          child: Text(event.dateTimeStart.day.toString(),
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold))),
                       Container(
                         padding: EdgeInsets.all(8),
-                        child: Text("SAT",
+                        child: Text(weeks[event.dateTimeStart.weekday - 1],
                             style: TextStyle(
                                 fontSize: 10, color: HexColor("#C1C1C1"))),
                       ),
@@ -118,14 +143,16 @@ class _MyEventPageState extends State<MyEventPage> {
                                   padding: EdgeInsets.only(
                                       left: 0, top: 0, right: 4, bottom: 0),
                                   child: Image(
-                                      image: AssetImage('assets/mic.png'),
+                                      image: AssetImage(mapCategory[
+                                              event.category.toUpperCase()]
+                                          .toString()),
                                       width: 20,
                                       height: 20),
                                 ),
                                 Container(
                                   width: 300,
                                   child: Text(
-                                    "Inside the mind of a master procrastinator",
+                                    event.title,
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
                                     style: TextStyle(
@@ -141,11 +168,18 @@ class _MyEventPageState extends State<MyEventPage> {
                         Padding(
                           padding: EdgeInsets.only(
                               left: 0, top: 0, right: 0, bottom: 2),
-                          child: Text("Conference Room Emilio Gatti",
+                          child: Text(event.place,
                               style: TextStyle(
                                   fontSize: 12, color: Colors.grey[400])),
                         ),
-                        Text("4:00PM - 5:00PM",
+                        Text(
+                            event.dateTimeStart.hour.toString() +
+                                ":" +
+                                event.dateTimeStart.minute.toString() +
+                                " - " +
+                                event.dateTimeEnd.hour.toString() +
+                                ":" +
+                                event.dateTimeEnd.minute.toString(),
                             style: TextStyle(
                                 fontSize: 12, color: Colors.grey[400]))
                       ],

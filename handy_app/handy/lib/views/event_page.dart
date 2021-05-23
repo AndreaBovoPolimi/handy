@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:handy/models/events.dart';
+import 'package:handy/services/external_API.dart';
+import 'package:handy/utils/category.dart';
+import 'package:handy/utils/date.dart';
 import 'package:handy/views/sub_views/my_event_page.dart';
 import 'package:handy/views/sub_views/single_event_page.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -19,13 +24,29 @@ class _EventPageState extends State<EventPage> {
   bool isRoundtableOn = false;
 
   bool isGroup = true;
+  bool isLoaded = false;
+
+  late Events events;
+
   final searchController = TextEditingController();
+
+  @override
+  void initState() {
+    getEvents();
+  }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is disposed.
     searchController.dispose();
     super.dispose();
+  }
+
+  void getEvents() async {
+    events = await getAllEvents();
+    setState(() {
+      isLoaded = true;
+    });
   }
 
   @override
@@ -154,6 +175,9 @@ class _EventPageState extends State<EventPage> {
                             fontSize: 18,
                             color: Colors.black,
                           ),
+                          onChanged: (value) {
+                            setState(() => isGroup = false);
+                          },
                           decoration: BoxDecoration(
                               boxShadow: [
                                 BoxShadow(
@@ -195,11 +219,54 @@ class _EventPageState extends State<EventPage> {
                     fontFamily: 'NunitoBold'),
               ),
             ),
-            eventCard(),
-            eventCard(),
-            eventCard(),
-            eventCard(),
-            eventCard(),
+            isLoaded
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: events.events.length,
+                    itemBuilder: (context, index) {
+                      if (isGroup) {
+                        if (!isConferenceOn &&
+                            !isMusicOn &&
+                            !isRoundtableOn &&
+                            !isSportOn &&
+                            !isWorkshopOn) {
+                          return eventCard(events.events[index]);
+                        } else {
+                          if (isConferenceOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "CONFERENCE")
+                            return eventCard(events.events[index]);
+                          if (isMusicOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "MUSIC")
+                            return eventCard(events.events[index]);
+                          if (isRoundtableOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "ROUNDTABLE")
+                            return eventCard(events.events[index]);
+                          if (isSportOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "SPORT")
+                            return eventCard(events.events[index]);
+                          if (isWorkshopOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "WORKSHOP")
+                            return eventCard(events.events[index]);
+                        }
+                      } else {
+                        if (searchController.text == "") {
+                          return eventCard(events.events[index]);
+                        } else {
+                          if (events.events[index].title
+                              .toUpperCase()
+                              .contains(searchController.text.toUpperCase())) {
+                            return eventCard(events.events[index]);
+                          }
+                        }
+                      }
+                      return SizedBox.shrink();
+                    })
+                : SizedBox.shrink(),
           ],
         ),
       ),
@@ -302,11 +369,11 @@ class _EventPageState extends State<EventPage> {
     );
   }
 
-  Widget eventCard() {
+  Widget eventCard(Event event) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) => SingleEventPage(true)),
+          MaterialPageRoute(builder: (context) => SingleEventPage(true, event)),
         );
       },
       child: Container(
@@ -320,7 +387,7 @@ class _EventPageState extends State<EventPage> {
                 ),
                 Container(
                   padding: EdgeInsets.all(8),
-                  child: Text("MAY",
+                  child: Text(months[event.dateTimeStart.month - 1],
                       style: TextStyle(
                           fontSize: 10.5, color: HexColor("#FF5722"))),
                 ),
@@ -334,12 +401,12 @@ class _EventPageState extends State<EventPage> {
                     children: [
                       Container(
                           padding: EdgeInsets.all(8),
-                          child: Text("15",
+                          child: Text(event.dateTimeStart.day.toString(),
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold))),
                       Container(
                         padding: EdgeInsets.all(8),
-                        child: Text("SAT",
+                        child: Text(weeks[event.dateTimeStart.weekday - 1],
                             style: TextStyle(
                                 fontSize: 10, color: HexColor("#C1C1C1"))),
                       ),
@@ -356,8 +423,8 @@ class _EventPageState extends State<EventPage> {
                 child: Stack(children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
-                    child: Image.asset(
-                      'assets/conference.png',
+                    child: Image.network(
+                      event.url,
                       width: 284,
                       height: 222.34,
                       fit: BoxFit.fill,
@@ -384,7 +451,16 @@ class _EventPageState extends State<EventPage> {
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 5, top: 5, right: 5, bottom: 0),
-                        child: Text("SATURDAY MAY 15, 4PM",
+                        child: Text(
+                            weeks[event.dateTimeStart.weekday - 1] +
+                                " " +
+                                months[event.dateTimeStart.month - 1] +
+                                " " +
+                                event.dateTimeStart.day.toString() +
+                                ", " +
+                                event.dateTimeStart.hour.toString() +
+                                ":" +
+                                event.dateTimeStart.minute.toString(),
                             style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
@@ -394,8 +470,7 @@ class _EventPageState extends State<EventPage> {
                         padding: EdgeInsets.only(
                             left: 5, top: 5, right: 5, bottom: 0),
                         width: 274,
-                        child: Text(
-                            "Inside the mind of a master procrastinator | Tim Urban",
+                        child: Text(event.title,
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -408,13 +483,15 @@ class _EventPageState extends State<EventPage> {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Image(
-                                  image: AssetImage('assets/mic.png'),
+                                  image: AssetImage(
+                                      mapCategory[event.category.toUpperCase()]
+                                          .toString()),
                                   width: 16,
                                   height: 16),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(2.0),
-                              child: Text("Conference",
+                              child: Text(event.category,
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey[400])),
                             ),
@@ -428,7 +505,10 @@ class _EventPageState extends State<EventPage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(2.0),
-                              child: Text("Free",
+                              child: Text(
+                                  event.price == 0
+                                      ? "Free"
+                                      : "€" + event.price.toString(),
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey[300])),
                             ),

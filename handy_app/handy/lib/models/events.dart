@@ -1,16 +1,39 @@
 import 'dart:convert';
 
 class Events {
+  List<Event> events;
+  Events({
+    required this.events,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'events': events.map((x) => x.toMap()).toList(),
+    };
+  }
+
+  factory Events.fromMap(Map<String, dynamic> map) {
+    return Events(
+      events: List<Event>.from(map['events']?.map((x) => Event.fromMap(x))),
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Events.fromJson(String source) => Events.fromMap(json.decode(source));
+}
+
+class Event {
   String id;
   String url;
   String category;
-  String dateTimeStart;
-  String dateTimeEnd;
+  DateTime dateTimeStart;
+  DateTime dateTimeEnd;
   String title;
   double price;
   String street;
   String place;
-  Events({
+  Event({
     required this.id,
     required this.url,
     required this.category,
@@ -36,8 +59,8 @@ class Events {
     };
   }
 
-  factory Events.fromMap(Map<String, dynamic> map) {
-    return Events(
+  factory Event.fromMap(Map<String, dynamic> map) {
+    return Event(
       id: map['id'],
       url: map['url'],
       category: map['category'],
@@ -52,5 +75,5 @@ class Events {
 
   String toJson() => json.encode(toMap());
 
-  factory Events.fromJson(String source) => Events.fromMap(json.decode(source));
+  factory Event.fromJson(String source) => Event.fromMap(json.decode(source));
 }

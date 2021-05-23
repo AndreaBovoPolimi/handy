@@ -61,7 +61,7 @@ class _MyEventPageState extends State<MyEventPage> {
           MaterialPageRoute(builder: (context) => SingleEventPage(false)),
         );
       },
-      child: Padding(
+      child: Container(
         padding: const EdgeInsets.all(10.0),
         child: Row(
           children: [
@@ -119,8 +119,8 @@ class _MyEventPageState extends State<MyEventPage> {
                                       left: 0, top: 0, right: 4, bottom: 0),
                                   child: Image(
                                       image: AssetImage('assets/mic.png'),
-                                      width: 16,
-                                      height: 16),
+                                      width: 20,
+                                      height: 20),
                                 ),
                                 Container(
                                   width: 300,
@@ -128,6 +128,10 @@ class _MyEventPageState extends State<MyEventPage> {
                                     "Inside the mind of a master procrastinator",
                                     overflow: TextOverflow.ellipsis,
                                     maxLines: 1,
+                                    style: TextStyle(
+                                        color: Colors.black,
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16),
                                   ),
                                 ),
                               ],

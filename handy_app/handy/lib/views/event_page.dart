@@ -42,7 +42,10 @@ class _EventPageState extends State<EventPage> {
           Container(
             child: Text(
               '  Discover events  ',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 28,
+                  //fontWeight: FontWeight.bold,
+                  fontFamily: 'NunitoBold'),
             ),
           ),
           GestureDetector(
@@ -147,6 +150,24 @@ class _EventPageState extends State<EventPage> {
                         width: 365,
                         height: 44,
                         child: CupertinoTextField(
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
+                              color: Colors.white,
+                              border: Border.all(color: Colors.black12),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
                           controller: searchController,
                           placeholder: "Search...",
                           cursorColor: HexColor("#FF5722"),
@@ -158,16 +179,20 @@ class _EventPageState extends State<EventPage> {
                                 width: 16,
                                 height: 16),
                           ),
-                          prefixMode: OverlayVisibilityMode.always,
+                          prefixMode: OverlayVisibilityMode.notEditing,
                         ),
                       ),
                     ),
                   ),
             Container(
-              margin: EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
+              margin: EdgeInsets.only(left: 20, top: 20, right: 0, bottom: 0),
               child: Text(
-                '  Upcoming',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
+                'Upcoming',
+                style: TextStyle(
+                    fontSize: 26,
+                    color: Colors.black,
+                    //fontWeight: FontWeight.bold,
+                    fontFamily: 'NunitoBold'),
               ),
             ),
             eventCard(),
@@ -336,6 +361,20 @@ class _EventPageState extends State<EventPage> {
                       width: 284,
                       height: 222.34,
                       fit: BoxFit.fill,
+                    ),
+                  ),
+                  Opacity(
+                    opacity: 0.5,
+                    child: Container(
+                      width: 284,
+                      height: 222.34,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Colors.transparent, Colors.blue])),
+                      alignment: Alignment.center,
                     ),
                   ),
                   Wrap(

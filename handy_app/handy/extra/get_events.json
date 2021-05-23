@@ -1,0 +1,16 @@
+{
+    "data":[
+        {
+            "id_event":"1234",
+            "link_photo": "http...",
+            "category": "music",
+            "date_time_start": "dd-mmm-yyyy hh:mm",
+            "date_time_end": "dd-mmm-yyyy hh:mm",
+            "title":"title",
+            "author":"author",
+            "price":0,
+            "street":"via porco dio",
+            "place":"la natta porco dio"
+        }
+    ]
+}

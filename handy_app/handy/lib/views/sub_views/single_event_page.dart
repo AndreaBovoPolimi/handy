@@ -51,15 +51,21 @@ class _SingleEventPageState extends State<SingleEventPage> {
                 )),
           ),
           Positioned(
-              top: 544,
+              top: 494,
               left: 0,
               child: Opacity(
-                  opacity: 0.5,
-                  child: Container(
-                    width: 420,
-                    height: 20,
-                    color: HexColor("#10181F"),
-                  ))),
+                opacity: 0.9,
+                child: Container(
+                  width: 420,
+                  height: 70,
+                  decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                          begin: Alignment.topCenter,
+                          end: Alignment.bottomCenter,
+                          colors: [Colors.transparent, HexColor("#10181F")])),
+                  alignment: Alignment.center,
+                ),
+              )),
           Positioned(
               top: 564,
               left: 0,
@@ -192,6 +198,31 @@ class _SingleEventPageState extends State<SingleEventPage> {
                       Navigator.pop(context);
                     },
                     child: Card(
+                        color: HexColor("#FF5722"),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(13.0),
+                        ),
+                        child: Container(
+                          height: 50,
+                          width: 200,
+                          child: Center(
+                            child: Text("Subscribe",
+                                style: TextStyle(
+                                    fontSize: 22,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold)),
+                          ),
+                        )),
+                  ),
+                )
+              : Positioned(
+                  top: 810,
+                  left: 195,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.pop(context);
+                    },
+                    child: Card(
                         color: Colors.white,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(13.0),
@@ -200,7 +231,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                           height: 50,
                           width: 200,
                           child: Center(
-                            child: Text("Register",
+                            child: Text("Unsubscribe",
                                 style: TextStyle(
                                     fontSize: 22,
                                     color: HexColor("#FF5722"),
@@ -208,8 +239,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                           ),
                         )),
                   ),
-                )
-              : Text(""),
+                ),
         ]));
   }
 }

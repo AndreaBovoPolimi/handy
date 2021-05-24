@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:handy/models/events.dart';
 import 'package:handy/services/external_API.dart';
 import 'package:handy/utils/category.dart';
@@ -26,12 +26,22 @@ class _EventPageState extends State<EventPage> {
   bool isGroup = true;
   bool isLoaded = false;
 
+  bool iskeyboardOpen = false;
+
   late Events events;
 
   final searchController = TextEditingController();
 
   @override
   void initState() {
+    var keyboardVisibilityController = KeyboardVisibilityController();
+
+    keyboardVisibilityController.onChange.listen((bool visible) {
+      setState(() {
+        iskeyboardOpen = visible;
+      });
+    });
+
     getEvents();
   }
 
@@ -74,11 +84,13 @@ class _EventPageState extends State<EventPage> {
           ),
           GestureDetector(
               onTap: () {
+                FocusScope.of(context).unfocus();
                 setState(() => isGroup ? isGroup = false : isGroup = true);
               },
               child: topButtonSearch()),
           GestureDetector(
               onTap: () {
+                FocusScope.of(context).unfocus();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => MyEventPage()),
@@ -101,6 +113,7 @@ class _EventPageState extends State<EventPage> {
                         Row(children: [
                           GestureDetector(
                             onTap: () {
+                              FocusScope.of(context).unfocus();
                               setState(() => isMusicOn
                                   ? isMusicOn = false
                                   : isMusicOn = true);
@@ -112,6 +125,7 @@ class _EventPageState extends State<EventPage> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              FocusScope.of(context).unfocus();
                               setState(() => isSportOn
                                   ? isSportOn = false
                                   : isSportOn = true);
@@ -121,6 +135,7 @@ class _EventPageState extends State<EventPage> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              FocusScope.of(context).unfocus();
                               setState(() => isWorkshopOn
                                   ? isWorkshopOn = false
                                   : isWorkshopOn = true);
@@ -133,6 +148,7 @@ class _EventPageState extends State<EventPage> {
                           children: [
                             GestureDetector(
                               onTap: () {
+                                FocusScope.of(context).unfocus();
                                 setState(() => isConferenceOn
                                     ? isConferenceOn = false
                                     : isConferenceOn = true);
@@ -150,6 +166,7 @@ class _EventPageState extends State<EventPage> {
                             ),
                             GestureDetector(
                               onTap: () {
+                                FocusScope.of(context).unfocus();
                                 setState(() => isRoundtableOn
                                     ? isRoundtableOn = false
                                     : isRoundtableOn = true);
@@ -231,8 +248,10 @@ class _EventPageState extends State<EventPage> {
                       padding: EdgeInsets.only(
                           left: 0, top: 10, right: 0, bottom: 0),
                       child: Container(
-                        height: 519,
+                        height: iskeyboardOpen ? 256 : 518,
                         child: CustomScrollView(
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
                           slivers: [
                             CupertinoSliverRefreshControl(
                               onRefresh: getEvents,
@@ -468,6 +487,7 @@ class _EventPageState extends State<EventPage> {
   Widget eventCard(Event event) {
     return GestureDetector(
       onTap: () {
+        FocusScope.of(context).unfocus();
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(builder: (context) => SingleEventPage(true, event)),
         );

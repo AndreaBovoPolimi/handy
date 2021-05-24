@@ -31,6 +31,7 @@ dependencies:
   hexcolor: ^2.0.3
   maps_launcher: ^2.0.0
   http: ^0.13.3
+  flutter_keyboard_visibility: ^5.0.2
 
 dev_dependencies:
   flutter_test:

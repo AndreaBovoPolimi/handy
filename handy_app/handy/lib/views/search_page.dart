@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class SearchPage extends StatefulWidget {
@@ -34,6 +35,11 @@ class _SearchPageState extends State<SearchPage> {
             )
           ]),
         ),
-        child: Center(child: Text("da sviluppare")));
+        child: Center(
+          child: Text(
+            "da sviluppare",
+            style: TextStyle(color: Colors.black, fontSize: 28),
+          ),
+        ));
   }
 }

@@ -15,7 +15,10 @@ class CupertinoStoreApp extends StatelessWidget {
         [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
     return CupertinoApp(
-      theme: const CupertinoThemeData(brightness: Brightness.light),
+      theme: const CupertinoThemeData(
+          brightness: Brightness.light,
+          textTheme: CupertinoTextThemeData(
+              textStyle: TextStyle(fontFamily: 'Nunito'))),
       debugShowCheckedModeBanner: false,
       home: CupertinoStoreHomePage(),
     );

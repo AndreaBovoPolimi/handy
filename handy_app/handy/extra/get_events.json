@@ -1,0 +1,236 @@
+{
+    "data":[
+        {
+            "id_event":"1234",
+            "link_photo": "http...",
+            "category": "music",
+            "date_time_start": "dd-mmm-yyyy hh:mm",
+            "date_time_end": "dd-mmm-yyyy hh:mm",
+            "title":"title",
+            "author":"author",
+            "price":0.5,
+            "street":"via porco dio",
+            "place":"la natta porco dio"
+        }
+    ]
+}
+
+{
+    "events":[
+        {
+            "id":"1234",
+            "url": "http...",
+            "category": "music",
+            "date_time_start": "dd-mmm-yyyy hh:mm",
+            "date_time_end": "dd-mmm-yyyy hh:mm",
+            "title":"title",
+            "price":0.5,
+            "street":"via porco dio",
+            "place":"la natta porco dio"
+        }
+    ]
+}
+
+{
+    "_id": "60aa55c4160c8321a32f213e",
+    "index": 0,
+    "title": "Et nostrud laborum excepteur exercitation est.",
+    "description": "Nostrud nisi est incididunt nostrud dolore cupidatat nulla velit et sint minim. Esse fugiat et fugiat Lorem non laborum labore commodo anim dolore duis. Eiusmod sint ad esse sunt anim incididunt velit duis nulla. Excepteur labore ex aute nostrud ea non qui qui deserunt tempor exercitation aliquip. Qui laboris ut id qui cupidatat minim do culpa.",
+    "datetimeStart": 1618430643721,
+    "datetimeEnd": 371815337296,
+    "thumbMediaId": "60aa55c465b86ee53948f438",
+    "isActive": true,
+    "category": "roundtable",
+    "location": {
+      "locationId": "60aa55c4c6c58014e4003d78",
+      "eventLocationNote": "Secondary Entrance"
+    },
+    "tags": [
+      "consequat"
+    ],
+    "participantUsers": [
+      {
+        "userId": "60aa55c43cdfe685aa160d02",
+        "registeredAt": 1618569115201,
+        "payment": {
+          "cardName": "Dunlap Rodriguez",
+          "cardNumber": 2370059490715410,
+          "cardExpiration": "25-02",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c47d65546267478f46",
+        "registeredAt": 1616220361157,
+        "payment": {
+          "cardName": "Bean Sawyer",
+          "cardNumber": 8605320522137520,
+          "cardExpiration": "23-10",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c41433cffbc1a07881",
+        "registeredAt": 1613535789381,
+        "payment": {
+          "cardName": "Cline Beatrice",
+          "cardNumber": 5522587583661686,
+          "cardExpiration": "26-05",
+          "result": true
+        }
+      },
+      {
+        "userId": "60aa55c415c0a79ed817a92b",
+        "registeredAt": 1617900750578,
+        "payment": {
+          "cardName": "Sexton Lorene",
+          "cardNumber": 3703874096310984,
+          "cardExpiration": "23-02",
+          "result": true
+        }
+      },
+      {
+        "userId": "60aa55c422acc26ea71d83f7",
+        "registeredAt": 1620904908450,
+        "payment": {
+          "cardName": "Daniels Sally",
+          "cardNumber": 2586326179909269,
+          "cardExpiration": "23-04",
+          "result": true
+        }
+      },
+      {
+        "userId": "60aa55c40ecd5ce129c04faf",
+        "registeredAt": 1621219785397,
+        "payment": {
+          "cardName": "Patterson Lorna",
+          "cardNumber": 2589338830294316,
+          "cardExpiration": "21-07",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c4d00b1ef914af8dc2",
+        "registeredAt": 1615073587517,
+        "payment": {
+          "cardName": "Meadows Lawson",
+          "cardNumber": 9217714165779178,
+          "cardExpiration": "22-04",
+          "result": true
+        }
+      },
+      {
+        "userId": "60aa55c473052f2d55cbba12",
+        "registeredAt": 1620666219313,
+        "payment": {
+          "cardName": "Bowman Carver",
+          "cardNumber": 2179807651216152,
+          "cardExpiration": "21-07",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c4c9e098352e71a20d",
+        "registeredAt": 1615798975619,
+        "payment": {
+          "cardName": "Thornton Sanford",
+          "cardNumber": 2934243194469620,
+          "cardExpiration": "24-03",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c45fdf83624d50ece9",
+        "registeredAt": 1614318043287,
+        "payment": {
+          "cardName": "Giles Janna",
+          "cardNumber": 1566340825340077,
+          "cardExpiration": "26-01",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c42d974651d0e3321e",
+        "registeredAt": 1617579916339,
+        "payment": {
+          "cardName": "Padilla Savage",
+          "cardNumber": 1874359154117772,
+          "cardExpiration": "22-01",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c43e58a2c4c77cea27",
+        "registeredAt": 1620431741684,
+        "payment": {
+          "cardName": "Martin Perez",
+          "cardNumber": 1271781918123671,
+
+"cardExpiration": "24-12",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c40de4fb4ea54209e6",
+        "registeredAt": 1617252201459,
+        "payment": {
+          "cardName": "Mclaughlin Paul",
+          "cardNumber": 5610788126948258,
+          "cardExpiration": "23-03",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c41cce379ec05bbc46",
+        "registeredAt": 1621355243564,
+        "payment": {
+          "cardName": "Pena Annette",
+          "cardNumber": 4188985942338602,
+          "cardExpiration": "21-06",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c44e923e1a4a9e8c5e",
+        "registeredAt": 1616146479357,
+        "payment": {
+          "cardName": "Perez Lina",
+          "cardNumber": 8985866417469936,
+          "cardExpiration": "21-12",
+          "result": false
+        }
+      },
+      {
+        "userId": "60aa55c4429c6e1ee496dfa7",
+        "registeredAt": 1615289655925,
+        "payment": {
+          "cardName": "Pruitt Mcbride",
+          "cardNumber": 4186382852773869,
+          "cardExpiration": "21-01",
+          "result": true
+        }
+      },
+      {
+        "userId": "60aa55c41db27025924842f6",
+        "registeredAt": 1619254774007,
+        "payment": {
+          "cardName": "Hurst Glass",
+          "cardNumber": 1267099691746692,
+          "cardExpiration": "21-08",
+          "result": true
+        }
+      },
+      {
+        "userId": "60aa55c44ee58d84eb096d03",
+        "registeredAt": 1613738150084,
+        "payment": {
+          "cardName": "Patrick Morrison",
+          "cardNumber": 7511655259441334,
+          "cardExpiration": "21-01",
+          "result": false
+        }
+      }
+    ],
+    "ticketCost": 7,
+    "partecipantsLimit": "-1"
+  },

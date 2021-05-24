@@ -29,7 +29,10 @@ class _HomePageState extends State<HomePage> {
             Container(
               child: Text(
                 '  Home  ',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontSize: 28,
+                    //fontWeight: FontWeight.bold,
+                    fontFamily: 'NunitoBold'),
               ),
             )
           ]),

@@ -29,7 +29,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Container(
               child: Text(
                 '  Profile  ',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 28, fontFamily: 'NunitoBold'),
               ),
             )
           ]),

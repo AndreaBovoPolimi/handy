@@ -29,7 +29,7 @@ class _SearchPageState extends State<SearchPage> {
             Container(
               child: Text(
                 '  Search  ',
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+                style: TextStyle(fontSize: 28, fontFamily: 'NunitoBold'),
               ),
             )
           ]),

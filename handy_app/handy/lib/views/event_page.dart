@@ -1,5 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:handy/models/events.dart';
+import 'package:handy/services/external_API.dart';
+import 'package:handy/utils/category.dart';
+import 'package:handy/utils/date.dart';
 import 'package:handy/views/sub_views/my_event_page.dart';
 import 'package:handy/views/sub_views/single_event_page.dart';
 import 'package:hexcolor/hexcolor.dart';
@@ -18,6 +23,32 @@ class _EventPageState extends State<EventPage> {
   bool isConferenceOn = false;
   bool isRoundtableOn = false;
 
+  bool isGroup = true;
+  bool isLoaded = false;
+
+  late Events events;
+
+  final searchController = TextEditingController();
+
+  @override
+  void initState() {
+    getEvents();
+  }
+
+  @override
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    searchController.dispose();
+    super.dispose();
+  }
+
+  void getEvents() async {
+    events = await getAllEvents();
+    setState(() {
+      isLoaded = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return CupertinoPageScaffold(
@@ -32,10 +63,17 @@ class _EventPageState extends State<EventPage> {
           Container(
             child: Text(
               '  Discover events  ',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 28,
+                  //fontWeight: FontWeight.bold,
+                  fontFamily: 'NunitoBold'),
             ),
           ),
-          GestureDetector(onTap: () {}, child: topButtonSearch()),
+          GestureDetector(
+              onTap: () {
+                setState(() => isGroup ? isGroup = false : isGroup = true);
+              },
+              child: topButtonSearch()),
           GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -43,7 +81,7 @@ class _EventPageState extends State<EventPage> {
                   MaterialPageRoute(builder: (context) => MyEventPage()),
                 );
               },
-              child: topButtonPath('assets/my_events.jpeg')),
+              child: topButtonPath('assets/my_events.png')),
         ]),
       ),
       child: Container(
@@ -51,81 +89,184 @@ class _EventPageState extends State<EventPage> {
         child: ListView(
           padding: EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
           children: [
-            Column(
-              children: [
-                Row(children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() =>
-                          isMusicOn ? isMusicOn = false : isMusicOn = true);
-                    },
-                    child: Container(
-                      child: topCard("assets/music.png", Colors.black,
-                          HexColor("#ACCCFF"), "MUSIC", isMusicOn),
-                    ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() =>
-                          isSportOn ? isSportOn = false : isSportOn = true);
-                    },
-                    child: topCard("assets/man.png", Colors.black,
-                        HexColor("#FFC8AC"), "SPORT", isSportOn),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() => isWorkshopOn
-                          ? isWorkshopOn = false
-                          : isWorkshopOn = true);
-                    },
-                    child: topCard("assets/laptop.png", Colors.black,
-                        HexColor("#D75757"), "WORKSHOP", isWorkshopOn),
-                  ),
-                ]),
-                Row(
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() => isConferenceOn
-                            ? isConferenceOn = false
-                            : isConferenceOn = true);
-                      },
+            isGroup
+                ? Column(
+                    children: [
+                      Row(children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() => isMusicOn
+                                ? isMusicOn = false
+                                : isMusicOn = true);
+                          },
+                          child: Container(
+                            child: topCard("assets/music.png", Colors.black,
+                                HexColor("#ACCCFF"), "MUSIC", isMusicOn),
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() => isSportOn
+                                ? isSportOn = false
+                                : isSportOn = true);
+                          },
+                          child: topCard("assets/man.png", Colors.black,
+                              HexColor("#FFC8AC"), "SPORT", isSportOn),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() => isWorkshopOn
+                                ? isWorkshopOn = false
+                                : isWorkshopOn = true);
+                          },
+                          child: topCard("assets/laptop.png", Colors.black,
+                              HexColor("#D75757"), "WORKSHOP", isWorkshopOn),
+                        ),
+                      ]),
+                      Row(
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() => isConferenceOn
+                                  ? isConferenceOn = false
+                                  : isConferenceOn = true);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 60, top: 0, right: 0, bottom: 0),
+                              child: topCard(
+                                  "assets/mic.png",
+                                  Colors.black,
+                                  HexColor("#FFC3D8"),
+                                  "CONFERENCE",
+                                  isConferenceOn),
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              setState(() => isRoundtableOn
+                                  ? isRoundtableOn = false
+                                  : isRoundtableOn = true);
+                            },
+                            child: Container(
+                              margin: EdgeInsets.only(
+                                  left: 0, top: 0, right: 60, bottom: 0),
+                              child: topCard(
+                                  "assets/hand.png",
+                                  Colors.black,
+                                  HexColor("#739B53"),
+                                  "ROUNDTABLE",
+                                  isRoundtableOn),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )
+                : Padding(
+                    padding:
+                        EdgeInsets.only(left: 0, top: 38, right: 0, bottom: 38),
+                    child: Center(
                       child: Container(
-                        margin: EdgeInsets.only(
-                            left: 60, top: 0, right: 0, bottom: 0),
-                        child: topCard("assets/mic.png", Colors.black,
-                            HexColor("#FFC3D8"), "CONFERENCE", isConferenceOn),
+                        width: 365,
+                        height: 44,
+                        child: CupertinoTextField(
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.black,
+                          ),
+                          onChanged: (value) {
+                            setState(() => isGroup = false);
+                          },
+                          decoration: BoxDecoration(
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(0.1),
+                                  spreadRadius: 5,
+                                  blurRadius: 7,
+                                  offset: Offset(
+                                      0, 3), // changes position of shadow
+                                ),
+                              ],
+                              color: Colors.white,
+                              border: Border.all(color: Colors.black12),
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(20))),
+                          controller: searchController,
+                          placeholder: "Search...",
+                          cursorColor: HexColor("#FF5722"),
+                          clearButtonMode: OverlayVisibilityMode.editing,
+                          prefix: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Image(
+                                image: AssetImage('assets/search_events.png'),
+                                width: 16,
+                                height: 16),
+                          ),
+                          prefixMode: OverlayVisibilityMode.notEditing,
+                        ),
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() => isRoundtableOn
-                            ? isRoundtableOn = false
-                            : isRoundtableOn = true);
-                      },
-                      child: Container(
-                        margin: EdgeInsets.only(
-                            left: 0, top: 0, right: 60, bottom: 0),
-                        child: topCard("assets/hand.png", Colors.black,
-                            HexColor("#739B53"), "ROUNDTABLE", isRoundtableOn),
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
+                  ),
             Container(
-              margin: EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
+              margin: EdgeInsets.only(left: 20, top: 20, right: 0, bottom: 0),
               child: Text(
-                '  Upcoming',
-                style: TextStyle(fontSize: 26, fontWeight: FontWeight.w500),
+                'Upcoming',
+                style: TextStyle(
+                    fontSize: 26,
+                    color: Colors.black,
+                    //fontWeight: FontWeight.bold,
+                    fontFamily: 'NunitoBold'),
               ),
             ),
-            eventCard(),
-            eventCard(),
-            eventCard(),
-            eventCard(),
-            eventCard(),
+            isLoaded
+                ? ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: events.events.length,
+                    itemBuilder: (context, index) {
+                      if (isGroup) {
+                        if (!isConferenceOn &&
+                            !isMusicOn &&
+                            !isRoundtableOn &&
+                            !isSportOn &&
+                            !isWorkshopOn) {
+                          return eventCard(events.events[index]);
+                        } else {
+                          if (isConferenceOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "CONFERENCE")
+                            return eventCard(events.events[index]);
+                          if (isMusicOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "MUSIC")
+                            return eventCard(events.events[index]);
+                          if (isRoundtableOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "ROUNDTABLE")
+                            return eventCard(events.events[index]);
+                          if (isSportOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "SPORT")
+                            return eventCard(events.events[index]);
+                          if (isWorkshopOn &&
+                              events.events[index].category.toUpperCase() ==
+                                  "WORKSHOP")
+                            return eventCard(events.events[index]);
+                        }
+                      } else {
+                        if (searchController.text == "") {
+                          return eventCard(events.events[index]);
+                        } else {
+                          if (events.events[index].title
+                              .toUpperCase()
+                              .contains(searchController.text.toUpperCase())) {
+                            return eventCard(events.events[index]);
+                          }
+                        }
+                      }
+                      return SizedBox.shrink();
+                    })
+                : SizedBox.shrink(),
           ],
         ),
       ),
@@ -139,7 +280,8 @@ class _EventPageState extends State<EventPage> {
       height: 50,
       child: Center(
           child: Image(
-              image: AssetImage('assets/search_events.jpeg'),
+              image: AssetImage(
+                  isGroup ? 'assets/search_events.png' : 'assets/my_group.png'),
               width: 16,
               height: 16)),
       decoration: decorationShadow(),
@@ -227,11 +369,11 @@ class _EventPageState extends State<EventPage> {
     );
   }
 
-  Widget eventCard() {
+  Widget eventCard(Event event) {
     return GestureDetector(
       onTap: () {
         Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) => SingleEventPage()),
+          MaterialPageRoute(builder: (context) => SingleEventPage(true, event)),
         );
       },
       child: Container(
@@ -245,7 +387,7 @@ class _EventPageState extends State<EventPage> {
                 ),
                 Container(
                   padding: EdgeInsets.all(8),
-                  child: Text("MAY",
+                  child: Text(months[event.dateTimeStart.month - 1],
                       style: TextStyle(
                           fontSize: 10.5, color: HexColor("#FF5722"))),
                 ),
@@ -259,12 +401,12 @@ class _EventPageState extends State<EventPage> {
                     children: [
                       Container(
                           padding: EdgeInsets.all(8),
-                          child: Text("15",
+                          child: Text(event.dateTimeStart.day.toString(),
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold))),
                       Container(
                         padding: EdgeInsets.all(8),
-                        child: Text("SAT",
+                        child: Text(weeks[event.dateTimeStart.weekday - 1],
                             style: TextStyle(
                                 fontSize: 10, color: HexColor("#C1C1C1"))),
                       ),
@@ -281,11 +423,25 @@ class _EventPageState extends State<EventPage> {
                 child: Stack(children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
-                    child: Image.asset(
-                      'assets/conference.png',
+                    child: Image.network(
+                      event.url,
                       width: 284,
                       height: 222.34,
                       fit: BoxFit.fill,
+                    ),
+                  ),
+                  Opacity(
+                    opacity: 0.5,
+                    child: Container(
+                      width: 284,
+                      height: 222.34,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(15.0),
+                          gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [Colors.transparent, Colors.blue])),
+                      alignment: Alignment.center,
                     ),
                   ),
                   Wrap(
@@ -295,7 +451,16 @@ class _EventPageState extends State<EventPage> {
                       Padding(
                         padding: const EdgeInsets.only(
                             left: 5, top: 5, right: 5, bottom: 0),
-                        child: Text("SATURDAY MAY 15, 4PM",
+                        child: Text(
+                            weeks[event.dateTimeStart.weekday - 1] +
+                                " " +
+                                months[event.dateTimeStart.month - 1] +
+                                " " +
+                                event.dateTimeStart.day.toString() +
+                                ", " +
+                                event.dateTimeStart.hour.toString() +
+                                ":" +
+                                event.dateTimeStart.minute.toString(),
                             style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
@@ -305,8 +470,7 @@ class _EventPageState extends State<EventPage> {
                         padding: EdgeInsets.only(
                             left: 5, top: 5, right: 5, bottom: 0),
                         width: 274,
-                        child: Text(
-                            "Inside the mind of a master procrastinator | Tim Urban",
+                        child: Text(event.title,
                             style: TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
@@ -319,13 +483,15 @@ class _EventPageState extends State<EventPage> {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Image(
-                                  image: AssetImage('assets/mic.png'),
+                                  image: AssetImage(
+                                      mapCategory[event.category.toUpperCase()]
+                                          .toString()),
                                   width: 16,
                                   height: 16),
                             ),
                             Padding(
                               padding: const EdgeInsets.all(2.0),
-                              child: Text("Conference",
+                              child: Text(event.category,
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey[400])),
                             ),
@@ -339,7 +505,10 @@ class _EventPageState extends State<EventPage> {
                             ),
                             Padding(
                               padding: const EdgeInsets.all(2.0),
-                              child: Text("Free",
+                              child: Text(
+                                  event.price == 0
+                                      ? "Free"
+                                      : "€" + event.price.toString(),
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey[300])),
                             ),

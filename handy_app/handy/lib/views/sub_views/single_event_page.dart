@@ -46,8 +46,8 @@ class _SingleEventPageState extends State<SingleEventPage> {
             ),
           ),
           Positioned(
-            top: 49,
-            left: 15,
+            top: 52,
+            left: 13,
             child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);

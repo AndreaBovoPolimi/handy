@@ -30,7 +30,10 @@ class _MyEventPageState extends State<MyEventPage> {
     super.dispose();
   }
 
-  void getEvents() async {
+  Future<void> getEvents() async {
+    setState(() {
+      events = Events(events: []);
+    });
     events = await getAllMyEvents();
     setState(() {
       isLoaded = true;
@@ -66,17 +69,49 @@ class _MyEventPageState extends State<MyEventPage> {
         child: Container(
           color: HexColor("#F6F8F8"),
           child: isLoaded
-              ? ListView.builder(
+              ? Padding(
+                  padding:
+                      EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
+                  child: Expanded(
+                    child: CustomScrollView(
+                      slivers: [
+                        CupertinoSliverRefreshControl(
+                          onRefresh: getEvents,
+                        ),
+                        SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              return myEventsCard(events.events[index]);
+                            },
+                            childCount: events.events.length,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
+              : Center(
+                  child: CircularProgressIndicator(
+                  color: HexColor("#FF5722"),
+                )),
+        ));
+  }
+
+  /* ListView.builder(
                   shrinkWrap: true,
                   padding:
                       EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
                   itemCount: events.events.length,
                   itemBuilder: (context, index) {
-                    return myEventsCard(events.events[index]);
-                  })
-              : SizedBox.shrink(),
-        ));
-  }
+                    if (index == 0) {
+                      return CupertinoSliverRefreshControl(
+                          refreshTriggerPullDistance: 100.0,
+                          refreshIndicatorExtent: 60.0,
+                          onRefresh: getEvents);
+                    } else {
+                      return myEventsCard(events.events[index]);
+                    }
+                  })*/
 
   Widget myEventsCard(Event event) {
     return GestureDetector(

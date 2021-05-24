@@ -4,7 +4,9 @@ const port = 3000;
 const expressSwagger = require('express-swagger-generator')(app);
 
 const url = 'mongodb://localhost:27017';
-const MongoClient = require('mongodb').MongoClient;
+const { MongoClient } = require('mongodb');
+
+app.use(express.json());
 
 let options = {
   swaggerDefinition: {
@@ -32,7 +34,7 @@ let options = {
 expressSwagger(options);
 
 app.get('/events', (req, res) => {
-  dbConnect((db, dbClose) => {
+  dbConnect((db) => {
     const events = db
       .collection('events')
       .find(
@@ -47,9 +49,56 @@ app.get('/events', (req, res) => {
   });
 });
 
-app.put('events/:id/subscribe', (req, res) => {});
+app.post('/events', (req, res) => {
+  const event = req.body;
 
-app.put('events/:id/unsubscribe', (req, res) => {});
+  dbConnect((db) => {
+    db.collection('events').insertOne(event);
+    res.json({
+      success: true,
+      insertedEvent: req.body,
+    });
+  });
+});
+
+app.put('/events/:id/subscribe', (req, res) => {
+  dbConnect((db) => {
+    console.log(req.params.id);
+    db.collection('events').updateOne(
+      { _id: req.params.id },
+      {
+        $push: {
+          participantUsers: {
+            userId: req.body.userId,
+            registeredAt: (Date.now() / 1000) | 0,
+            payment: null,
+          },
+        },
+      }
+    );
+    res.json({
+      success: true,
+    });
+  });
+});
+
+app.put('/events/:id/unsubscribe', (req, res) => {
+  dbConnect((db) => {
+    db.collection('events').updateOne(
+      { _id: req.params.id },
+      {
+        $pull: {
+          participantUsers: {
+            userId: req.body.userId,
+          },
+        },
+      }
+    );
+    res.json({
+      success: true,
+    });
+  });
+});
 
 app.listen(port, () => console.log(`Handy backend listening at http://localhost:${port}`));
 

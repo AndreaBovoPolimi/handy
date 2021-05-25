@@ -1,20 +1,24 @@
 import 'dart:convert';
 
 class Events {
+  bool result;
   List<Event> events;
   Events({
+    required this.result,
     required this.events,
   });
 
   Map<String, dynamic> toMap() {
     return {
+      'result': result,
       'events': events.map((x) => x.toMap()).toList(),
     };
   }
 
   factory Events.fromMap(Map<String, dynamic> map) {
     return Events(
-      events: List<Event>.from(map['events']?.map((x) => Event.fromMap(x))),
+      result: map['result'],
+      events: List<Event>.from(map['events'].map((x) => Event.fromMap(x))),
     );
   }
 
@@ -24,56 +28,80 @@ class Events {
 }
 
 class Event {
-  String id;
-  String url;
-  String category;
-  DateTime dateTimeStart;
-  DateTime dateTimeEnd;
+  String sId;
   String title;
-  double price;
-  String street;
-  String place;
+  DateTime datetimeStart;
+  DateTime datetimeEnd;
+  String thumbMediaUrl;
+  String category;
+  Location location;
+  int ticketCost;
   Event({
-    required this.id,
-    required this.url,
-    required this.category,
-    required this.dateTimeStart,
-    required this.dateTimeEnd,
+    required this.sId,
     required this.title,
-    required this.price,
-    required this.street,
-    required this.place,
+    required this.datetimeStart,
+    required this.datetimeEnd,
+    required this.thumbMediaUrl,
+    required this.category,
+    required this.location,
+    required this.ticketCost,
   });
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'url': url,
-      'category': category,
-      'dateTimeStart': dateTimeStart,
-      'dateTimeEnd': dateTimeEnd,
+      '_Id': sId,
       'title': title,
-      'price': price,
-      'street': street,
-      'place': place,
+      'datetimeStart': datetimeStart,
+      'datetimeEnd': datetimeEnd,
+      'thumbMediaUrl': thumbMediaUrl,
+      'category': category,
+      'location': location.toMap(),
+      'ticketCost': ticketCost,
     };
   }
 
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
-      id: map['id'],
-      url: map['url'],
-      category: map['category'],
-      dateTimeStart: map['dateTimeStart'],
-      dateTimeEnd: map['dateTimeEnd'],
+      sId: map['_Id'],
       title: map['title'],
-      price: map['price'],
-      street: map['street'],
-      place: map['place'],
+      datetimeStart: map['datetimeStart'],
+      datetimeEnd: map['datetimeEnd'],
+      thumbMediaUrl: map['thumbMediaUrl'],
+      category: map['category'],
+      location: Location.fromMap(map['location']),
+      ticketCost: map['ticketCost'],
     );
   }
 
   String toJson() => json.encode(toMap());
 
   factory Event.fromJson(String source) => Event.fromMap(json.decode(source));
+}
+
+class Location {
+  String title;
+  String address;
+  Location({
+    required this.title,
+    required this.address,
+  });
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'address': address,
+    };
+  }
+
+  factory Location.fromMap(Map<String, dynamic> map) {
+    return Location(
+      title: map['title'],
+      address: map['address'],
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Location.fromJson(String source) =>
+      Location.fromMap(json.decode(source));
 }

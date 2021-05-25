@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:hexcolor/hexcolor.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -34,6 +35,10 @@ class _ProfilePageState extends State<ProfilePage> {
             )
           ]),
         ),
-        child: Center(child: Text("da sviluppare")));
+        child: Center(
+            child: Text(
+          "da sviluppare",
+          style: TextStyle(color: Colors.black, fontSize: 28),
+        )));
   }
 }

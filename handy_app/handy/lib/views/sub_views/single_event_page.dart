@@ -40,14 +40,14 @@ class _SingleEventPageState extends State<SingleEventPage> {
             height: 564,
             width: 700,
             child: Image.network(
-              _event!.url,
+              _event!.thumbMediaUrl,
               fit: BoxFit.fitHeight,
               alignment: Alignment.centerRight,
             ),
           ),
           Positioned(
-            top: 49,
-            left: 15,
+            top: 52,
+            left: 13,
             child: GestureDetector(
                 onTap: () {
                   Navigator.pop(context);
@@ -105,19 +105,19 @@ class _SingleEventPageState extends State<SingleEventPage> {
                           child: Container(
                             width: 420,
                             child: Text(
-                                weeks[_event!.dateTimeStart.weekday - 1] +
+                                weeks[_event!.datetimeStart.weekday - 1] +
                                     " " +
-                                    months[_event!.dateTimeStart.month - 1] +
+                                    months[_event!.datetimeStart.month - 1] +
                                     " " +
-                                    _event!.dateTimeStart.day.toString() +
+                                    _event!.datetimeStart.day.toString() +
                                     ", " +
-                                    _event!.dateTimeStart.hour.toString() +
+                                    _event!.datetimeStart.hour.toString() +
                                     ":" +
-                                    _event!.dateTimeStart.minute.toString() +
+                                    _event!.datetimeStart.minute.toString() +
                                     " - " +
-                                    _event!.dateTimeEnd.hour.toString() +
+                                    _event!.datetimeEnd.hour.toString() +
                                     ":" +
-                                    _event!.dateTimeEnd.minute.toString(),
+                                    _event!.datetimeEnd.minute.toString(),
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.white)),
                           ),
@@ -127,7 +127,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      MapsLauncher.launchQuery(_event!.street);
+                      MapsLauncher.launchQuery(_event!.location.address);
                       //MapsLauncher.launchCoordinates(37.4220041, -122.0862462);
                     },
                     child: Column(
@@ -146,7 +146,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                                 padding: const EdgeInsets.all(5.0),
                                 child: Container(
                                   width: 420,
-                                  child: Text(_event!.place,
+                                  child: Text(_event!.location.title,
                                       style: TextStyle(
                                           fontSize: 14, color: Colors.white)),
                                 ),
@@ -159,7 +159,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                                 left: 24, top: 0, right: 0, bottom: 0),
                             child: Container(
                               width: 420,
-                              child: Text(_event!.street,
+                              child: Text(_event!.location.address,
                                   style: TextStyle(
                                       fontSize: 10, color: Colors.white54)),
                             )),
@@ -203,9 +203,9 @@ class _SingleEventPageState extends State<SingleEventPage> {
                           child: Container(
                             width: 420,
                             child: Text(
-                                _event!.price == 0
+                                _event!.ticketCost == 0
                                     ? "Free"
-                                    : "€" + _event!.price.toString(),
+                                    : "€" + _event!.ticketCost.toString(),
                                 style: TextStyle(
                                     fontSize: 14, color: Colors.white)),
                           ),
@@ -221,7 +221,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                   left: 195,
                   child: GestureDetector(
                     onTap: () async {
-                      await postEventSubscription(_event!.id);
+                      await postEventSubscription(_event!.sId);
                       Navigator.pop(context);
                     },
                     child: Card(
@@ -247,7 +247,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                   left: 195,
                   child: GestureDetector(
                     onTap: () async {
-                      await deleteEventSubscription(_event!.id);
+                      await deleteEventSubscription(_event!.sId);
                       Navigator.pop(context);
                     },
                     child: Card(

@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:handy/models/events.dart';
 import 'package:handy/services/external_API.dart';
 import 'package:handy/utils/category.dart';
@@ -26,12 +26,22 @@ class _EventPageState extends State<EventPage> {
   bool isGroup = true;
   bool isLoaded = false;
 
+  bool iskeyboardOpen = false;
+
   late Events events;
 
   final searchController = TextEditingController();
 
   @override
   void initState() {
+    var keyboardVisibilityController = KeyboardVisibilityController();
+
+    keyboardVisibilityController.onChange.listen((bool visible) {
+      setState(() {
+        iskeyboardOpen = visible;
+      });
+    });
+
     getEvents();
   }
 
@@ -42,7 +52,10 @@ class _EventPageState extends State<EventPage> {
     super.dispose();
   }
 
-  void getEvents() async {
+  Future<void> getEvents() async {
+    setState(() {
+      events = Events(result: true, events: []);
+    });
     events = await getAllEvents();
     setState(() {
       isLoaded = true;
@@ -71,11 +84,13 @@ class _EventPageState extends State<EventPage> {
           ),
           GestureDetector(
               onTap: () {
+                FocusScope.of(context).unfocus();
                 setState(() => isGroup ? isGroup = false : isGroup = true);
               },
               child: topButtonSearch()),
           GestureDetector(
               onTap: () {
+                FocusScope.of(context).unfocus();
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => MyEventPage()),
@@ -86,191 +101,288 @@ class _EventPageState extends State<EventPage> {
       ),
       child: Container(
         color: HexColor("#F6F8F8"),
-        child: ListView(
+        child: //RefreshIndicator(
+            //onRefresh: getEvents,
+            Padding(
           padding: EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
-          children: [
-            isGroup
-                ? Column(
-                    children: [
-                      Row(children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() => isMusicOn
-                                ? isMusicOn = false
-                                : isMusicOn = true);
-                          },
-                          child: Container(
-                            child: topCard("assets/music.png", Colors.black,
-                                HexColor("#ACCCFF"), "MUSIC", isMusicOn),
-                          ),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() => isSportOn
-                                ? isSportOn = false
-                                : isSportOn = true);
-                          },
-                          child: topCard("assets/man.png", Colors.black,
-                              HexColor("#FFC8AC"), "SPORT", isSportOn),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() => isWorkshopOn
-                                ? isWorkshopOn = false
-                                : isWorkshopOn = true);
-                          },
-                          child: topCard("assets/laptop.png", Colors.black,
-                              HexColor("#D75757"), "WORKSHOP", isWorkshopOn),
-                        ),
-                      ]),
-                      Row(
-                        children: [
+          child: Column(
+            children: [
+              isGroup
+                  ? Column(
+                      children: [
+                        Row(children: [
                           GestureDetector(
                             onTap: () {
-                              setState(() => isConferenceOn
-                                  ? isConferenceOn = false
-                                  : isConferenceOn = true);
+                              FocusScope.of(context).unfocus();
+                              setState(() => isMusicOn
+                                  ? isMusicOn = false
+                                  : isMusicOn = true);
                             },
                             child: Container(
-                              margin: EdgeInsets.only(
-                                  left: 60, top: 0, right: 0, bottom: 0),
-                              child: topCard(
-                                  "assets/mic.png",
-                                  Colors.black,
-                                  HexColor("#FFC3D8"),
-                                  "CONFERENCE",
-                                  isConferenceOn),
+                              child: topCard("assets/music.png", Colors.black,
+                                  HexColor("#ACCCFF"), "MUSIC", isMusicOn),
                             ),
                           ),
                           GestureDetector(
                             onTap: () {
-                              setState(() => isRoundtableOn
-                                  ? isRoundtableOn = false
-                                  : isRoundtableOn = true);
+                              FocusScope.of(context).unfocus();
+                              setState(() => isSportOn
+                                  ? isSportOn = false
+                                  : isSportOn = true);
                             },
-                            child: Container(
-                              margin: EdgeInsets.only(
-                                  left: 0, top: 0, right: 60, bottom: 0),
-                              child: topCard(
-                                  "assets/hand.png",
-                                  Colors.black,
-                                  HexColor("#739B53"),
-                                  "ROUNDTABLE",
-                                  isRoundtableOn),
+                            child: topCard("assets/man.png", Colors.black,
+                                HexColor("#FFC8AC"), "SPORT", isSportOn),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              FocusScope.of(context).unfocus();
+                              setState(() => isWorkshopOn
+                                  ? isWorkshopOn = false
+                                  : isWorkshopOn = true);
+                            },
+                            child: topCard("assets/laptop.png", Colors.black,
+                                HexColor("#D75757"), "WORKSHOP", isWorkshopOn),
+                          ),
+                        ]),
+                        Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                FocusScope.of(context).unfocus();
+                                setState(() => isConferenceOn
+                                    ? isConferenceOn = false
+                                    : isConferenceOn = true);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: 60, top: 0, right: 0, bottom: 0),
+                                child: topCard(
+                                    "assets/mic.png",
+                                    Colors.black,
+                                    HexColor("#FFC3D8"),
+                                    "CONFERENCE",
+                                    isConferenceOn),
+                              ),
                             ),
+                            GestureDetector(
+                              onTap: () {
+                                FocusScope.of(context).unfocus();
+                                setState(() => isRoundtableOn
+                                    ? isRoundtableOn = false
+                                    : isRoundtableOn = true);
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(
+                                    left: 0, top: 0, right: 60, bottom: 0),
+                                child: topCard(
+                                    "assets/hand.png",
+                                    Colors.black,
+                                    HexColor("#739B53"),
+                                    "ROUNDTABLE",
+                                    isRoundtableOn),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    )
+                  : Padding(
+                      padding: EdgeInsets.only(
+                          left: 0, top: 38, right: 0, bottom: 38),
+                      child: Center(
+                        child: Container(
+                          width: 365,
+                          height: 44,
+                          child: CupertinoTextField(
+                            style: TextStyle(
+                              fontSize: 18,
+                              color: Colors.black,
+                            ),
+                            onChanged: (value) {
+                              setState(() => isGroup = false);
+                            },
+                            decoration: BoxDecoration(
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.grey.withOpacity(0.1),
+                                    spreadRadius: 5,
+                                    blurRadius: 7,
+                                    offset: Offset(
+                                        0, 3), // changes position of shadow
+                                  ),
+                                ],
+                                color: Colors.white,
+                                border: Border.all(color: Colors.black12),
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20))),
+                            controller: searchController,
+                            placeholder: "Search...",
+                            cursorColor: HexColor("#FF5722"),
+                            clearButtonMode: OverlayVisibilityMode.editing,
+                            prefix: Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Image(
+                                  image: AssetImage('assets/search_events.png'),
+                                  width: 16,
+                                  height: 16),
+                            ),
+                            prefixMode: OverlayVisibilityMode.always,
                           ),
-                        ],
-                      ),
-                    ],
-                  )
-                : Padding(
-                    padding:
-                        EdgeInsets.only(left: 0, top: 38, right: 0, bottom: 38),
-                    child: Center(
-                      child: Container(
-                        width: 365,
-                        height: 44,
-                        child: CupertinoTextField(
-                          style: TextStyle(
-                            fontSize: 18,
-                            color: Colors.black,
-                          ),
-                          onChanged: (value) {
-                            setState(() => isGroup = false);
-                          },
-                          decoration: BoxDecoration(
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(0.1),
-                                  spreadRadius: 5,
-                                  blurRadius: 7,
-                                  offset: Offset(
-                                      0, 3), // changes position of shadow
-                                ),
-                              ],
-                              color: Colors.white,
-                              border: Border.all(color: Colors.black12),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(20))),
-                          controller: searchController,
-                          placeholder: "Search...",
-                          cursorColor: HexColor("#FF5722"),
-                          clearButtonMode: OverlayVisibilityMode.editing,
-                          prefix: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Image(
-                                image: AssetImage('assets/search_events.png'),
-                                width: 16,
-                                height: 16),
-                          ),
-                          prefixMode: OverlayVisibilityMode.notEditing,
                         ),
                       ),
                     ),
-                  ),
-            Container(
-              margin: EdgeInsets.only(left: 20, top: 20, right: 0, bottom: 0),
-              child: Text(
-                'Upcoming',
-                style: TextStyle(
-                    fontSize: 26,
-                    color: Colors.black,
-                    //fontWeight: FontWeight.bold,
-                    fontFamily: 'NunitoBold'),
+              Container(
+                margin:
+                    EdgeInsets.only(left: 20, top: 20, right: 271, bottom: 0),
+                child: Text(
+                  'Upcoming',
+                  style: TextStyle(
+                      fontSize: 26,
+                      color: Colors.black,
+                      //fontWeight: FontWeight.bold,
+                      fontFamily: 'NunitoBold'),
+                ),
               ),
-            ),
-            isLoaded
-                ? ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: events.events.length,
-                    itemBuilder: (context, index) {
-                      if (isGroup) {
-                        if (!isConferenceOn &&
-                            !isMusicOn &&
-                            !isRoundtableOn &&
-                            !isSportOn &&
-                            !isWorkshopOn) {
-                          return eventCard(events.events[index]);
-                        } else {
-                          if (isConferenceOn &&
-                              events.events[index].category.toUpperCase() ==
-                                  "CONFERENCE")
-                            return eventCard(events.events[index]);
-                          if (isMusicOn &&
-                              events.events[index].category.toUpperCase() ==
-                                  "MUSIC")
-                            return eventCard(events.events[index]);
-                          if (isRoundtableOn &&
-                              events.events[index].category.toUpperCase() ==
-                                  "ROUNDTABLE")
-                            return eventCard(events.events[index]);
-                          if (isSportOn &&
-                              events.events[index].category.toUpperCase() ==
-                                  "SPORT")
-                            return eventCard(events.events[index]);
-                          if (isWorkshopOn &&
-                              events.events[index].category.toUpperCase() ==
-                                  "WORKSHOP")
-                            return eventCard(events.events[index]);
-                        }
-                      } else {
-                        if (searchController.text == "") {
-                          return eventCard(events.events[index]);
-                        } else {
-                          if (events.events[index].title
-                              .toUpperCase()
-                              .contains(searchController.text.toUpperCase())) {
-                            return eventCard(events.events[index]);
-                          }
-                        }
-                      }
-                      return SizedBox.shrink();
-                    })
-                : SizedBox.shrink(),
-          ],
+              isLoaded
+                  ? Padding(
+                      padding: EdgeInsets.only(
+                          left: 0, top: 10, right: 0, bottom: 0),
+                      child: Container(
+                        height: iskeyboardOpen ? 256 : 518,
+                        child: CustomScrollView(
+                          keyboardDismissBehavior:
+                              ScrollViewKeyboardDismissBehavior.onDrag,
+                          slivers: [
+                            CupertinoSliverRefreshControl(
+                              onRefresh: getEvents,
+                            ),
+                            SliverList(
+                              delegate: SliverChildBuilderDelegate(
+                                (context, index) {
+                                  if (isGroup) {
+                                    if (!isConferenceOn &&
+                                        !isMusicOn &&
+                                        !isRoundtableOn &&
+                                        !isSportOn &&
+                                        !isWorkshopOn) {
+                                      return eventCard(events.events[index]);
+                                    } else {
+                                      if (isConferenceOn &&
+                                          events.events[index].category
+                                                  .toUpperCase() ==
+                                              "CONFERENCE")
+                                        return eventCard(events.events[index]);
+                                      if (isMusicOn &&
+                                          events.events[index].category
+                                                  .toUpperCase() ==
+                                              "MUSIC")
+                                        return eventCard(events.events[index]);
+                                      if (isRoundtableOn &&
+                                          events.events[index].category
+                                                  .toUpperCase() ==
+                                              "ROUNDTABLE")
+                                        return eventCard(events.events[index]);
+                                      if (isSportOn &&
+                                          events.events[index].category
+                                                  .toUpperCase() ==
+                                              "SPORT")
+                                        return eventCard(events.events[index]);
+                                      if (isWorkshopOn &&
+                                          events.events[index].category
+                                                  .toUpperCase() ==
+                                              "WORKSHOP")
+                                        return eventCard(events.events[index]);
+                                    }
+                                  } else {
+                                    if (searchController.text == "") {
+                                      return eventCard(events.events[index]);
+                                    } else {
+                                      if (events.events[index].title
+                                          .toUpperCase()
+                                          .contains(searchController.text
+                                              .toUpperCase())) {
+                                        return eventCard(events.events[index]);
+                                      }
+                                    }
+                                  }
+                                  return SizedBox.shrink();
+                                },
+                                childCount: events.events.length,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                  : Stack(children: [
+                      SizedBox(
+                        width: 500,
+                        height: 350,
+                        child: Center(
+                          child: CircularProgressIndicator(
+                            color: HexColor("#FF5722"),
+                          ),
+                        ),
+                      )
+                    ])
+            ],
+          ),
         ),
       ),
     );
+  }
+
+  List<Widget> getEventsList() {
+    List<Widget> list = [SizedBox.shrink()];
+    if (isLoaded) {
+      for (var event in events.events) {
+        if (isGroup) {
+          if (!isConferenceOn &&
+              !isMusicOn &&
+              !isRoundtableOn &&
+              !isSportOn &&
+              !isWorkshopOn) {
+            list.add(eventCard(event));
+          } else {
+            if (isConferenceOn && event.category.toUpperCase() == "CONFERENCE")
+              list.add(eventCard(event));
+            if (isMusicOn && event.category.toUpperCase() == "MUSIC")
+              list.add(eventCard(event));
+            if (isRoundtableOn && event.category.toUpperCase() == "ROUNDTABLE")
+              list.add(eventCard(event));
+            if (isSportOn && event.category.toUpperCase() == "SPORT")
+              list.add(eventCard(event));
+            if (isWorkshopOn && event.category.toUpperCase() == "WORKSHOP")
+              list.add(eventCard(event));
+          }
+        } else {
+          if (searchController.text == "") {
+            list.add(eventCard(event));
+          } else {
+            if (event.title
+                .toUpperCase()
+                .contains(searchController.text.toUpperCase())) {
+              list.add(eventCard(event));
+            }
+          }
+        }
+      }
+    } else {
+      list.add(
+        Stack(children: [
+          SizedBox(
+            width: 500,
+            height: 350,
+            child: Center(
+              child: CircularProgressIndicator(
+                color: HexColor("#FF5722"),
+              ),
+            ),
+          )
+        ]),
+      );
+    }
+    return list;
   }
 
   Widget topButtonSearch() {
@@ -330,7 +442,10 @@ class _EventPageState extends State<EventPage> {
               children: [
                 topButtonIcon(iconPath, color, backgroundColor),
                 Text(text,
-                    style: TextStyle(fontSize: 10.5, color: backgroundColor)),
+                    style: TextStyle(
+                        fontSize: 11,
+                        color: backgroundColor,
+                        fontFamily: 'NunitoBold')),
               ],
             ),
           ),
@@ -372,6 +487,7 @@ class _EventPageState extends State<EventPage> {
   Widget eventCard(Event event) {
     return GestureDetector(
       onTap: () {
+        FocusScope.of(context).unfocus();
         Navigator.of(context, rootNavigator: true).push(
           MaterialPageRoute(builder: (context) => SingleEventPage(true, event)),
         );
@@ -387,7 +503,7 @@ class _EventPageState extends State<EventPage> {
                 ),
                 Container(
                   padding: EdgeInsets.all(8),
-                  child: Text(months[event.dateTimeStart.month - 1],
+                  child: Text(months[event.datetimeStart.month - 1],
                       style: TextStyle(
                           fontSize: 10.5, color: HexColor("#FF5722"))),
                 ),
@@ -401,12 +517,12 @@ class _EventPageState extends State<EventPage> {
                     children: [
                       Container(
                           padding: EdgeInsets.all(8),
-                          child: Text(event.dateTimeStart.day.toString(),
+                          child: Text(event.datetimeStart.day.toString(),
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold))),
                       Container(
                         padding: EdgeInsets.all(8),
-                        child: Text(weeks[event.dateTimeStart.weekday - 1],
+                        child: Text(weeks[event.datetimeStart.weekday - 1],
                             style: TextStyle(
                                 fontSize: 10, color: HexColor("#C1C1C1"))),
                       ),
@@ -424,7 +540,7 @@ class _EventPageState extends State<EventPage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Image.network(
-                      event.url,
+                      event.thumbMediaUrl,
                       width: 284,
                       height: 222.34,
                       fit: BoxFit.fill,
@@ -452,15 +568,15 @@ class _EventPageState extends State<EventPage> {
                         padding: const EdgeInsets.only(
                             left: 5, top: 5, right: 5, bottom: 0),
                         child: Text(
-                            weeks[event.dateTimeStart.weekday - 1] +
+                            weeks[event.datetimeStart.weekday - 1] +
                                 " " +
-                                months[event.dateTimeStart.month - 1] +
+                                months[event.datetimeStart.month - 1] +
                                 " " +
-                                event.dateTimeStart.day.toString() +
+                                event.datetimeStart.day.toString() +
                                 ", " +
-                                event.dateTimeStart.hour.toString() +
+                                event.datetimeStart.hour.toString() +
                                 ":" +
-                                event.dateTimeStart.minute.toString(),
+                                event.datetimeStart.minute.toString(),
                             style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
@@ -506,9 +622,9 @@ class _EventPageState extends State<EventPage> {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Text(
-                                  event.price == 0
+                                  event.ticketCost == 0
                                       ? "Free"
-                                      : "€" + event.price.toString(),
+                                      : "€" + event.ticketCost.toString(),
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey[300])),
                             ),

@@ -62,7 +62,10 @@ class _MyEventPageState extends State<MyEventPage> {
           middle: Center(
             child: Text(
               ' My events calendar      ',
-              style: TextStyle(fontSize: 28, fontWeight: FontWeight.w600),
+              style: TextStyle(
+                  fontSize: 28,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: 'NunitoBold'),
             ),
           ),
         ),

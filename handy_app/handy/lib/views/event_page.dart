@@ -563,10 +563,10 @@ class _EventPageState extends State<EventPage> {
                   Wrap(
                     direction: Axis.vertical,
                     children: [
-                      SizedBox(height: 120),
+                      SizedBox(height: 108),
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 5, top: 5, right: 5, bottom: 0),
+                            left: 10, top: 5, right: 5, bottom: 0),
                         child: Text(
                             weeks[event.datetimeStart.weekday - 1] +
                                 " " +
@@ -584,16 +584,16 @@ class _EventPageState extends State<EventPage> {
                       ),
                       Container(
                         padding: EdgeInsets.only(
-                            left: 5, top: 5, right: 5, bottom: 0),
+                            left: 10, top: 5, right: 5, bottom: 0),
                         width: 274,
                         child: Text(event.title,
                             style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
+                                fontSize: 19,
+                                fontFamily: 'NunitoBold',
                                 color: Colors.white)),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(5.0),
+                        padding: const EdgeInsets.all(10.0),
                         child: Row(
                           children: [
                             Padding(
@@ -609,7 +609,7 @@ class _EventPageState extends State<EventPage> {
                               padding: const EdgeInsets.all(2.0),
                               child: Text(event.category,
                                   style: TextStyle(
-                                      fontSize: 12, color: Colors.grey[400])),
+                                      fontSize: 12, color: Colors.grey[300])),
                             ),
                             Padding(
                               padding: EdgeInsets.only(

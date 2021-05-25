@@ -42,7 +42,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
             child: Image.network(
               _event!.thumbMediaUrl,
               fit: BoxFit.fitHeight,
-              alignment: Alignment.centerRight,
+              alignment: Alignment.center,
             ),
           ),
           Positioned(

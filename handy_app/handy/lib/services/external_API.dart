@@ -1,11 +1,12 @@
 import 'dart:convert';
+
 import 'package:flutter/services.dart';
 import 'package:handy/models/events.dart';
 import 'package:http/http.dart' as http;
 
-String id = '';
+String id = '60aa55c43e452c110c92535b';
 
-String dominio = '1b64f858dbec.ngrok.io';
+String dominio = '26041c28d622.ngrok.io';
 
 bool isOnline = false;
 
@@ -26,8 +27,8 @@ Future<Events> getAllEvents() async {
 
 Future<Events> getAllMyEvents() async {
   if (isOnline) {
-    var contents =
-        await http.get(Uri.http(dominio, "/events", {"participantId": "$id"}));
+    var contents = await http
+        .get(Uri.http(dominio, "/events", {"participantUser": "$id"}));
     return Events.fromJson(contents.body);
   } else {
     String jsonString = await getJsonFile();
@@ -38,8 +39,11 @@ Future<Events> getAllMyEvents() async {
 
 Future postEventSubscription(String eventId) async {
   if (isOnline) {
-    await http
-        .put(Uri.http(dominio, "events/$eventId/subscribe", {"userId": "$id"}));
+    await http.put(Uri.http(dominio, "events/$eventId/subscribe"),
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body: json.encode({"userId": id}));
   } else {
     await Future.delayed(const Duration(milliseconds: 300), () {});
   }
@@ -47,8 +51,11 @@ Future postEventSubscription(String eventId) async {
 
 Future deleteEventSubscription(String eventId) async {
   if (isOnline) {
-    await http.put(
-        Uri.http(dominio, "events/$eventId/unsubscribe", {"userId": "$id"}));
+    await http.put(Uri.http(dominio, "events/$eventId/unsubscribe"),
+        headers: {
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body: json.encode({"userId": id}));
   } else {
     await Future.delayed(const Duration(milliseconds: 300), () {});
   }

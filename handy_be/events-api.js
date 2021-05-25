@@ -21,8 +21,10 @@ exports.getAll = (req, res) => {
       .project({ participantUsers: 0 })
       .toArray()
       .then((events) => {
-        console.log(events);
-        res.send(events);
+        res.send({
+          result: true,
+          data: events,
+        });
       });
   });
 };

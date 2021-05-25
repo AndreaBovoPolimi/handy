@@ -2,9 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:handy/views/event_page.dart';
-import 'package:handy/views/home_page.dart';
-import 'package:handy/views/profile_page.dart';
-import 'package:handy/views/search_page.dart';
 
 class CupertinoStoreApp extends StatelessWidget {
   @override
@@ -26,6 +23,7 @@ class CupertinoStoreApp extends StatelessWidget {
 }
 
 class CupertinoStoreHomePage extends StatelessWidget {
+  var eventPage = EventPage();
   @override
   Widget build(BuildContext context) {
     return CupertinoTabScaffold(
@@ -59,22 +57,22 @@ class CupertinoStoreHomePage extends StatelessWidget {
         switch (index) {
           case 0:
             returnValue = CupertinoTabView(builder: (context) {
-              return HomePage();
+              return eventPage;
             });
             break;
           case 1:
             returnValue = CupertinoTabView(builder: (context) {
-              return SearchPage();
+              return eventPage;
             });
             break;
           case 2:
             returnValue = CupertinoTabView(builder: (context) {
-              return EventPage();
+              return eventPage;
             });
             break;
           case 3:
             returnValue = CupertinoTabView(builder: (context) {
-              return ProfilePage();
+              return eventPage;
             });
             break;
         }

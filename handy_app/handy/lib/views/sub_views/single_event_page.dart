@@ -237,7 +237,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                                 style: TextStyle(
                                     fontSize: 22,
                                     color: Colors.white,
-                                    fontWeight: FontWeight.bold)),
+                                    fontFamily:'NunitoBold')),
                           ),
                         )),
                   ),
@@ -263,7 +263,7 @@ class _SingleEventPageState extends State<SingleEventPage> {
                                 style: TextStyle(
                                     fontSize: 22,
                                     color: HexColor("#FF5722"),
-                                    fontWeight: FontWeight.bold)),
+                                    fontFamily:'NunitoBold')),
                           ),
                         )),
                   ),

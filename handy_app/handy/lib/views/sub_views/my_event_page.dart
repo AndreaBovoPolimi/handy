@@ -32,7 +32,7 @@ class _MyEventPageState extends State<MyEventPage> {
 
   Future<void> getEvents() async {
     setState(() {
-      events = Events(events: []);
+      events = Events(result: true, events: []);
     });
     events = await getAllMyEvents();
     setState(() {
@@ -129,7 +129,7 @@ class _MyEventPageState extends State<MyEventPage> {
               children: [
                 Container(
                   padding: EdgeInsets.all(8),
-                  child: Text(months[event.dateTimeStart.month - 1],
+                  child: Text(months[event.datetimeStart.month - 1],
                       style: TextStyle(
                           fontSize: 10.5, color: HexColor("#FF5722"))),
                 ),
@@ -143,12 +143,12 @@ class _MyEventPageState extends State<MyEventPage> {
                     children: [
                       Container(
                           padding: EdgeInsets.all(8),
-                          child: Text(event.dateTimeStart.day.toString(),
+                          child: Text(event.datetimeStart.day.toString(),
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold))),
                       Container(
                         padding: EdgeInsets.all(8),
-                        child: Text(weeks[event.dateTimeStart.weekday - 1],
+                        child: Text(weeks[event.datetimeStart.weekday - 1],
                             style: TextStyle(
                                 fontSize: 10, color: HexColor("#C1C1C1"))),
                       ),
@@ -203,18 +203,18 @@ class _MyEventPageState extends State<MyEventPage> {
                         Padding(
                           padding: EdgeInsets.only(
                               left: 0, top: 0, right: 0, bottom: 2),
-                          child: Text(event.place,
+                          child: Text(event.location.title,
                               style: TextStyle(
                                   fontSize: 12, color: Colors.grey[400])),
                         ),
                         Text(
-                            event.dateTimeStart.hour.toString() +
+                            event.datetimeStart.hour.toString() +
                                 ":" +
-                                event.dateTimeStart.minute.toString() +
+                                event.datetimeStart.minute.toString() +
                                 " - " +
-                                event.dateTimeEnd.hour.toString() +
+                                event.datetimeEnd.hour.toString() +
                                 ":" +
-                                event.dateTimeEnd.minute.toString(),
+                                event.datetimeEnd.minute.toString(),
                             style: TextStyle(
                                 fontSize: 12, color: Colors.grey[400]))
                       ],

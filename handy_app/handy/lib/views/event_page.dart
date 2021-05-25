@@ -54,7 +54,7 @@ class _EventPageState extends State<EventPage> {
 
   Future<void> getEvents() async {
     setState(() {
-      isLoaded = false;
+      events = Events(result: true, events: []);
     });
     events = await getAllEvents();
     setState(() {
@@ -503,7 +503,7 @@ class _EventPageState extends State<EventPage> {
                 ),
                 Container(
                   padding: EdgeInsets.all(8),
-                  child: Text(months[event.dateTimeStart.month - 1],
+                  child: Text(months[event.datetimeStart.month - 1],
                       style: TextStyle(
                           fontSize: 10.5, color: HexColor("#FF5722"))),
                 ),
@@ -517,12 +517,12 @@ class _EventPageState extends State<EventPage> {
                     children: [
                       Container(
                           padding: EdgeInsets.all(8),
-                          child: Text(event.dateTimeStart.day.toString(),
+                          child: Text(event.datetimeStart.day.toString(),
                               style: TextStyle(
                                   fontSize: 14, fontWeight: FontWeight.bold))),
                       Container(
                         padding: EdgeInsets.all(8),
-                        child: Text(weeks[event.dateTimeStart.weekday - 1],
+                        child: Text(weeks[event.datetimeStart.weekday - 1],
                             style: TextStyle(
                                 fontSize: 10, color: HexColor("#C1C1C1"))),
                       ),
@@ -540,7 +540,7 @@ class _EventPageState extends State<EventPage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(15.0),
                     child: Image.network(
-                      event.url,
+                      event.thumbMediaUrl,
                       width: 284,
                       height: 222.34,
                       fit: BoxFit.fill,
@@ -568,15 +568,15 @@ class _EventPageState extends State<EventPage> {
                         padding: const EdgeInsets.only(
                             left: 5, top: 5, right: 5, bottom: 0),
                         child: Text(
-                            weeks[event.dateTimeStart.weekday - 1] +
+                            weeks[event.datetimeStart.weekday - 1] +
                                 " " +
-                                months[event.dateTimeStart.month - 1] +
+                                months[event.datetimeStart.month - 1] +
                                 " " +
-                                event.dateTimeStart.day.toString() +
+                                event.datetimeStart.day.toString() +
                                 ", " +
-                                event.dateTimeStart.hour.toString() +
+                                event.datetimeStart.hour.toString() +
                                 ":" +
-                                event.dateTimeStart.minute.toString(),
+                                event.datetimeStart.minute.toString(),
                             style: TextStyle(
                                 fontSize: 11,
                                 fontWeight: FontWeight.bold,
@@ -622,9 +622,9 @@ class _EventPageState extends State<EventPage> {
                             Padding(
                               padding: const EdgeInsets.all(2.0),
                               child: Text(
-                                  event.price == 0
+                                  event.ticketCost == 0
                                       ? "Free"
-                                      : "€" + event.price.toString(),
+                                      : "€" + event.ticketCost.toString(),
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.grey[300])),
                             ),

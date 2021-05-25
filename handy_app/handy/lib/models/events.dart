@@ -11,14 +11,14 @@ class Events {
   Map<String, dynamic> toMap() {
     return {
       'result': result,
-      'events': events.map((x) => x.toMap()).toList(),
+      'data': events.map((x) => x.toMap()).toList(),
     };
   }
 
   factory Events.fromMap(Map<String, dynamic> map) {
     return Events(
       result: map['result'],
-      events: List<Event>.from(map['events'].map((x) => Event.fromMap(x))),
+      events: List<Event>.from(map['data'].map((x) => Event.fromMap(x))),
     );
   }
 
@@ -49,7 +49,7 @@ class Event {
 
   Map<String, dynamic> toMap() {
     return {
-      '_Id': sId,
+      '_id': sId,
       'title': title,
       'datetimeStart': datetimeStart,
       'datetimeEnd': datetimeEnd,
@@ -62,10 +62,10 @@ class Event {
 
   factory Event.fromMap(Map<String, dynamic> map) {
     return Event(
-      sId: map['_Id'],
+      sId: map['_id'],
       title: map['title'],
-      datetimeStart: map['datetimeStart'],
-      datetimeEnd: map['datetimeEnd'],
+      datetimeStart: DateTime.parse(map['datetimeStart']),
+      datetimeEnd: DateTime.parse(map['datetimeEnd']),
       thumbMediaUrl: map['thumbMediaUrl'],
       category: map['category'],
       location: Location.fromMap(map['location']),

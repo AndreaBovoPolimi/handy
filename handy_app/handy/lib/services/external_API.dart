@@ -6,9 +6,9 @@ import 'package:http/http.dart' as http;
 
 String id = '60aa55c43e452c110c92535b';
 
-String dominio = '26041c28d622.ngrok.io';
+String dominio = 'handyappdil.azurewebsites.net';
 
-bool isOnline = false;
+bool isOnline = true;
 
 Future<String> getJsonFile() async {
   return await rootBundle.loadString('extra/database_seed.json');

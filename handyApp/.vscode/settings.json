@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "/subscriptions/cb6dde4a-4cf7-432b-a011-a9260b767524/resourceGroups/handyAppDIL/providers/Microsoft.Web/sites/handyAppDIL",
+    "appService.deploySubpath": "."
+}

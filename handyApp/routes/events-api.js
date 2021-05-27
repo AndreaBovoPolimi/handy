@@ -23,7 +23,25 @@ exports.getAll = (req, res) => {
     const events = db
       .collection('events')
       .find(
-        req.query.participantUser ? { participantUsers: { $elemMatch: { userId: req.query.participantUser } } } : {}
+        { participantUsers: {$not: { $elemMatch: { userId: req.query.participantUser } }} }
+      )
+      .project({ participantUsers: 0 })
+      .toArray()
+      .then((events) => {
+        res.send({
+          result: true,
+          data: events,
+        });
+      });
+  });
+};
+
+exports.getAllMy = (req, res) => {
+  dbConnect((db) => {
+    const events = db
+      .collection('events')
+      .find(
+        { participantUsers: { $elemMatch: { userId: req.query.participantUser } } }
       )
       .project({ participantUsers: 0 })
       .toArray()

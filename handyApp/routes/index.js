@@ -14,6 +14,8 @@ app.get('/try', apiEvents.try);
 // get all upcoming events
 app.get('/events', apiEvents.getAll);
 
+app.get('/events/my', apiEvents.getAllMy);
+
 // create a new event
 app.post('/events', apiEvents.create);
 

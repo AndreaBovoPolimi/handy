@@ -119,10 +119,12 @@ class _MyEventPageState extends State<MyEventPage> {
   Widget myEventsCard(Event event) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(
-              builder: (context) => SingleEventPage(false, event)),
-        );
+        Navigator.of(context, rootNavigator: true)
+            .push(
+              MaterialPageRoute(
+                  builder: (context) => SingleEventPage(false, event)),
+            )
+            .then((value) => getEvents());
       },
       child: Container(
         padding: const EdgeInsets.all(8.0),

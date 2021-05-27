@@ -94,7 +94,7 @@ class _EventPageState extends State<EventPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => MyEventPage()),
-                );
+                ).then((value) => getEvents());
               },
               child: topButtonPath('assets/my_events.png')),
         ]),
@@ -488,9 +488,12 @@ class _EventPageState extends State<EventPage> {
     return GestureDetector(
       onTap: () {
         FocusScope.of(context).unfocus();
-        Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(builder: (context) => SingleEventPage(true, event)),
-        );
+        Navigator.of(context, rootNavigator: true)
+            .push(
+              MaterialPageRoute(
+                  builder: (context) => SingleEventPage(true, event)),
+            )
+            .then((value) => getEvents());
       },
       child: Container(
         padding: EdgeInsets.all(25),

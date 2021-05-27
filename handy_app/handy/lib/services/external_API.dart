@@ -16,7 +16,8 @@ Future<String> getJsonFile() async {
 
 Future<Events> getAllEvents() async {
   if (isOnline) {
-    var contents = await http.get(Uri.http(dominio, "events"));
+    var contents = await http
+        .get(Uri.http(dominio, "/events", {"participantUser": "$id"}));
     var events = Events.fromJson(contents.body);
     events.events.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
     return events;
@@ -32,7 +33,7 @@ Future<Events> getAllEvents() async {
 Future<Events> getAllMyEvents() async {
   if (isOnline) {
     var contents = await http
-        .get(Uri.http(dominio, "/events", {"participantUser": "$id"}));
+        .get(Uri.http(dominio, "/events/my", {"participantUser": "$id"}));
     var events = Events.fromJson(contents.body);
     events.events.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
     return events;

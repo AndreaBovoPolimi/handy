@@ -1,5 +1,8 @@
-const url = 'mongodb://localhost:27017';
+const url =
+  'mongodb://handy-app-dil:GpaIiTARyQXzYlyz6C9yzPQx3IhAJZLXDQQ2UnKUOMUhEKJMG9B7XnXZUrcA59uINv7qRLrgH67oNJbfNNV0Tw==@handy-app-dil.mongo.cosmos.azure.com:10255/?ssl=true&replicaSet=globaldb&retrywrites=false&maxIdleTimeMS=120000&appName=@handy-app-dil@';
+//const url = 'mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&ssl=false';
 const { MongoClient } = require('mongodb');
+const recSys = require('./recsys');
 
 dbConnect = (query) => {
   MongoClient.connect(url, { useUnifiedTopology: true }, (err, db) => {
@@ -11,13 +14,45 @@ dbConnect = (query) => {
   });
 };
 
+exports.try = (req, res) => {
+  res.send({
+    result: true,
+  });
+};
+
 exports.getAll = (req, res) => {
   dbConnect((db) => {
     const events = db
       .collection('events')
-      .find(
-        req.query.participantUser ? { participantUsers: { $elemMatch: { userId: req.query.participantUser } } } : {}
-      )
+      .find({ participantUsers: { $not: { $elemMatch: { userId: req.query.participantUser } } } })
+      .project({ participantUsers: 0 })
+      .toArray()
+      .then((events) => {
+        const sortedCategoriesByDepartment = recSys.getSortedCategoriesByDepartment('Architecture');
+        events.sort((ev1, ev2) => {
+          console.log(sortedCategoriesByDepartment[ev1.category], sortedCategoriesByDepartment[ev2.category]);
+          return sortedCategoriesByDepartment[ev1.category] < sortedCategoriesByDepartment[ev2.category] ? 1 : -1;
+        });
+
+        res.send({
+          result: true,
+          data: events,
+        });
+      });
+  });
+};
+
+exports.getAllMy = (req, res) => {
+  dbConnect((db) => {
+    const events = db
+      .collection('events')
+      .find({
+        participantUsers: {
+          $elemMatch: {
+            userId: req.query.participantUser,
+          },
+        },
+      })
       .project({ participantUsers: 0 })
       .toArray()
       .then((events) => {

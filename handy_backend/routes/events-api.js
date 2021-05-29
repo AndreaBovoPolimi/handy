@@ -23,17 +23,29 @@ exports.try = (req, res) => {
 exports.getAll = (req, res) => {
   dbConnect((db) => {
     const events = db
+      // queried collections: events
       .collection('events')
-      .find({ participantUsers: { $not: { $elemMatch: { userId: req.query.participantUser } } } })
+      // only events the user is not subscribed to
+      .find({
+        participantUsers: {
+          $not: { $elemMatch: { userId: req.query.participantUser } },
+        },
+      })
+      // ignore useless and heavy fields
       .project({ participantUsers: 0 })
       .toArray()
       .then((events) => {
-        const sortedCategoriesByDepartment = recSys.getSortedCategoriesByDepartment('Architecture');
-        events.sort((ev1, ev2) => {
-          console.log(sortedCategoriesByDepartment[ev1.category], sortedCategoriesByDepartment[ev2.category]);
-          return sortedCategoriesByDepartment[ev1.category] < sortedCategoriesByDepartment[ev2.category] ? 1 : -1;
-        });
+        const studentDepartment = this.getDepartmentByUserId(req.query.participantUser);
 
+        // get the sorted event categories based on recommender system
+        const sortedCategoriesByDep = recSys.getSortedCategoriesByDepartment(studentDepartment);
+        const sortByRecSys = (ev1, ev2) =>
+          sortedCategoriesByDep[ev1.category] < sortedCategoriesByDep[ev2.category] ? 1 : -1;
+
+        // sort events to show the user the more suitable ones first
+        events.sort(sortByRecSys);
+
+        // response
         res.send({
           result: true,
           data: events,
@@ -113,4 +125,8 @@ exports.unsubscribe = (req, res) => {
       success: true,
     });
   });
+};
+
+exports.getDepartmentByUserId = (userId) => {
+  return 'architecture';
 };

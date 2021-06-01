@@ -30,6 +30,8 @@ exports.getSortedCategoriesByDepartment = (departmentString) => {
 
   departmentIndex = this.universityDepartments.indexOf(departmentString);
 
+  console.log(departmentIndex);
+
   values = Object.entries(Object.assign({}, transposed[departmentIndex]));
   values.sort((el, el2) => (el[1] < el2[1] ? 1 : -1));
   values = values.map((el) => [this.eventCategories[el[0]], el[1]]);

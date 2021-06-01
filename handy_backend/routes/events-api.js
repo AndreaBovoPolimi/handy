@@ -128,5 +128,5 @@ exports.unsubscribe = (req, res) => {
 };
 
 exports.getDepartmentByUserId = (userId) => {
-  return 'architecture';
+  return 'Architecture';
 };

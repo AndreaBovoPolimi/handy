@@ -32,11 +32,15 @@ Future<Events> getAllMyEvents() async {
   if (isOnline) {
     var contents = await http
         .get(Uri.http(dominio, "/events/my", {"participantUser": "$id"}));
-    return Events.fromJson(contents.body);
+    var events = Events.fromJson(contents.body);
+    events.events.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
+    return events;
   } else {
     String jsonString = await getJsonFile();
     await Future.delayed(const Duration(milliseconds: 500), () {});
-    return Events.fromJson(jsonString);
+    var events = Events.fromJson(jsonString);
+    events.events.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
+    return events;
   }
 }
 

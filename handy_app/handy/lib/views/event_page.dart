@@ -25,10 +25,13 @@ class _EventPageState extends State<EventPage> {
 
   bool isGroup = true;
   bool isLoaded = false;
+  bool isSorted = true;
 
   bool iskeyboardOpen = false;
 
   late Events events;
+  late List<Event> eventsSorted;
+  late List<Event> eventsNotSorted;
 
   final searchController = TextEditingController();
 
@@ -57,9 +60,42 @@ class _EventPageState extends State<EventPage> {
       events = Events(result: true, events: []);
     });
     events = await getAllEvents();
+    eventsNotSorted = List.from(events.events);
+    eventsSorted = List.from(events.events);
+    eventsSorted.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
+    sort();
     setState(() {
       isLoaded = true;
     });
+  }
+
+  void sortEvents() {
+    isSorted = true;
+    events.events = List.from(eventsSorted);
+    //print('sort ' + eventsSorted[1].title);
+  }
+
+  void unSortEvents() {
+    isSorted = false;
+    events.events = List.from(eventsNotSorted);
+    //print('unSorted ' + eventsNotSorted[1].title);
+  }
+
+  void sort() {
+    if ((isConferenceOn ||
+            isMusicOn ||
+            isRoundtableOn ||
+            isSportOn ||
+            isWorkshopOn) ||
+        !isGroup) {
+      if (!isSorted) {
+        sortEvents();
+      }
+    } else {
+      if (isSorted) {
+        unSortEvents();
+      }
+    }
   }
 
   @override
@@ -85,7 +121,9 @@ class _EventPageState extends State<EventPage> {
           GestureDetector(
               onTap: () {
                 FocusScope.of(context).unfocus();
-                setState(() => isGroup ? isGroup = false : isGroup = true);
+                isGroup ? isGroup = false : isGroup = true;
+                sort();
+                setState(() => {});
               },
               child: topButtonSearch()),
           GestureDetector(
@@ -114,9 +152,9 @@ class _EventPageState extends State<EventPage> {
                           GestureDetector(
                             onTap: () {
                               FocusScope.of(context).unfocus();
-                              setState(() => isMusicOn
-                                  ? isMusicOn = false
-                                  : isMusicOn = true);
+                              isMusicOn ? isMusicOn = false : isMusicOn = true;
+                              sort();
+                              setState(() => {});
                             },
                             child: Container(
                               child: topCard("assets/music.png", Colors.black,
@@ -126,9 +164,9 @@ class _EventPageState extends State<EventPage> {
                           GestureDetector(
                             onTap: () {
                               FocusScope.of(context).unfocus();
-                              setState(() => isSportOn
-                                  ? isSportOn = false
-                                  : isSportOn = true);
+                              isSportOn ? isSportOn = false : isSportOn = true;
+                              sort();
+                              setState(() => {});
                             },
                             child: topCard("assets/man.png", Colors.black,
                                 HexColor("#FFC8AC"), "SPORT", isSportOn),
@@ -136,9 +174,11 @@ class _EventPageState extends State<EventPage> {
                           GestureDetector(
                             onTap: () {
                               FocusScope.of(context).unfocus();
-                              setState(() => isWorkshopOn
+                              isWorkshopOn
                                   ? isWorkshopOn = false
-                                  : isWorkshopOn = true);
+                                  : isWorkshopOn = true;
+                              sort();
+                              setState(() => {});
                             },
                             child: topCard("assets/laptop.png", Colors.black,
                                 HexColor("#D75757"), "WORKSHOP", isWorkshopOn),
@@ -149,9 +189,11 @@ class _EventPageState extends State<EventPage> {
                             GestureDetector(
                               onTap: () {
                                 FocusScope.of(context).unfocus();
-                                setState(() => isConferenceOn
+                                isConferenceOn
                                     ? isConferenceOn = false
-                                    : isConferenceOn = true);
+                                    : isConferenceOn = true;
+                                sort();
+                                setState(() => {});
                               },
                               child: Container(
                                 margin: EdgeInsets.only(
@@ -167,9 +209,11 @@ class _EventPageState extends State<EventPage> {
                             GestureDetector(
                               onTap: () {
                                 FocusScope.of(context).unfocus();
-                                setState(() => isRoundtableOn
+                                isRoundtableOn
                                     ? isRoundtableOn = false
-                                    : isRoundtableOn = true);
+                                    : isRoundtableOn = true;
+                                sort();
+                                setState(() => {});
                               },
                               child: Container(
                                 margin: EdgeInsets.only(
@@ -232,10 +276,28 @@ class _EventPageState extends State<EventPage> {
                       ),
                     ),
               Container(
-                margin:
-                    EdgeInsets.only(left: 20, top: 20, right: 271, bottom: 0),
+                margin: //271
+                    EdgeInsets.only(
+                        left: 20,
+                        top: 20,
+                        right: ((isConferenceOn ||
+                                    isMusicOn ||
+                                    isRoundtableOn ||
+                                    isSportOn ||
+                                    isWorkshopOn) ||
+                                !isGroup)
+                            ? 271
+                            : 173,
+                        bottom: 0),
                 child: Text(
-                  'Upcoming',
+                  ((isConferenceOn ||
+                              isMusicOn ||
+                              isRoundtableOn ||
+                              isSportOn ||
+                              isWorkshopOn) ||
+                          !isGroup)
+                      ? 'Upcoming'
+                      : 'Suggested for you',
                   style: TextStyle(
                       fontSize: 26,
                       color: Colors.black,

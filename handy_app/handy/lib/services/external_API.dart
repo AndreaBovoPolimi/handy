@@ -14,19 +14,17 @@ Future<String> getJsonFile() async {
   return await rootBundle.loadString('extra/database_seed.json');
 }
 
+//events.events.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
+
 Future<Events> getAllEvents() async {
   if (isOnline) {
     var contents = await http
         .get(Uri.http(dominio, "/events", {"participantUser": "$id"}));
-    var events = Events.fromJson(contents.body);
-    events.events.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
-    return events;
+    return Events.fromJson(contents.body);
   } else {
     String jsonString = await getJsonFile();
     await Future.delayed(const Duration(milliseconds: 500), () {});
-    var events = Events.fromJson(jsonString);
-    events.events.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
-    return events;
+    return Events.fromJson(jsonString);
   }
 }
 
@@ -34,15 +32,11 @@ Future<Events> getAllMyEvents() async {
   if (isOnline) {
     var contents = await http
         .get(Uri.http(dominio, "/events/my", {"participantUser": "$id"}));
-    var events = Events.fromJson(contents.body);
-    events.events.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
-    return events;
+    return Events.fromJson(contents.body);
   } else {
     String jsonString = await getJsonFile();
     await Future.delayed(const Duration(milliseconds: 500), () {});
-    var events = Events.fromJson(jsonString);
-    events.events.sort((a, b) => a.datetimeStart.compareTo(b.datetimeStart));
-    return events;
+    return Events.fromJson(jsonString);
   }
 }
 

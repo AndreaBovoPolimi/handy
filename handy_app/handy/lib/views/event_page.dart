@@ -44,7 +44,6 @@ class _EventPageState extends State<EventPage> {
         iskeyboardOpen = visible;
       });
     });
-
     getEvents();
   }
 

@@ -75,22 +75,20 @@ class _MyEventPageState extends State<MyEventPage> {
               ? Padding(
                   padding:
                       EdgeInsets.only(left: 0, top: 20, right: 0, bottom: 0),
-                  child: Expanded(
-                    child: CustomScrollView(
-                      slivers: [
-                        CupertinoSliverRefreshControl(
-                          onRefresh: getEvents,
+                  child: CustomScrollView(
+                    slivers: [
+                      CupertinoSliverRefreshControl(
+                        onRefresh: getEvents,
+                      ),
+                      SliverList(
+                        delegate: SliverChildBuilderDelegate(
+                          (context, index) {
+                            return myEventsCard(events.events[index]);
+                          },
+                          childCount: events.events.length,
                         ),
-                        SliverList(
-                          delegate: SliverChildBuilderDelegate(
-                            (context, index) {
-                              return myEventsCard(events.events[index]);
-                            },
-                            childCount: events.events.length,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 )
               : Center(
@@ -176,33 +174,31 @@ class _MyEventPageState extends State<MyEventPage> {
                         Padding(
                           padding: EdgeInsets.only(
                               left: 0, top: 0, right: 0, bottom: 6),
-                          child: Flexible(
-                            child: Row(
-                              children: [
-                                Padding(
-                                  padding: EdgeInsets.only(
-                                      left: 0, top: 0, right: 4, bottom: 0),
-                                  child: Image(
-                                      image: AssetImage(mapCategory[
-                                              event.category.toUpperCase()]
-                                          .toString()),
-                                      width: 20,
-                                      height: 20),
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: EdgeInsets.only(
+                                    left: 0, top: 0, right: 4, bottom: 0),
+                                child: Image(
+                                    image: AssetImage(mapCategory[
+                                            event.category.toUpperCase()]
+                                        .toString()),
+                                    width: 20,
+                                    height: 20),
+                              ),
+                              Container(
+                                width: 300,
+                                child: Text(
+                                  event.title,
+                                  overflow: TextOverflow.ellipsis,
+                                  maxLines: 1,
+                                  style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16),
                                 ),
-                                Container(
-                                  width: 300,
-                                  child: Text(
-                                    event.title,
-                                    overflow: TextOverflow.ellipsis,
-                                    maxLines: 1,
-                                    style: TextStyle(
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                         Padding(

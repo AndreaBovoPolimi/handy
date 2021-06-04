@@ -9,7 +9,7 @@ Here, inside /handy subfolder there is all the *flutter* application for the man
     **Relevant files**
 - `lib/views` contains all dart code for the flutter view screens
 - `lib/services` contains all service logic to call the backend endpoints
-- `lib/services` contains the model to valdiate the response of endpoints
+- `lib/models` contains the model to valdiate the response of endpoints
 
 ### handy_be
 Here is the express nodejs backend services to serve the mobile application.

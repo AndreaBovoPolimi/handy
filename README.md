@@ -1,5 +1,8 @@
 # HANDY ecosystem
 
+![Handy Logo](https://postimg.cc/Ty73ddVn)
+
+
 👋 Hi, here is the #team2 implementation folder about the **Digital Innovation Lab** course at Polimi.
 
 ## Folder Structure

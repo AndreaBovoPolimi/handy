@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "dd5f9f6c-11e2-4f6d-8708-d0ff3b631cc2",
+		"name": "📚 Handy",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get suggested events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://handyappdil.azurewebsites.net/events?participantUser=60aa55c43cdfe685aa160d02",
+					"protocol": "https",
+					"host": [
+						"handyappdil",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"events"
+					],
+					"query": [
+						{
+							"key": "participantUser",
+							"value": "60aa55c43cdfe685aa160d02"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get my events",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://handyappdil.azurewebsites.net/events/my?participantUser=60aa55c43cdfe685aa160d02",
+					"protocol": "https",
+					"host": [
+						"handyappdil",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"events",
+						"my"
+					],
+					"query": [
+						{
+							"key": "participantUser",
+							"value": "60aa55c43cdfe685aa160d02"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create event",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\"_id\": \"10\",\n\"index\": 10,\n\"title\": \"Digital innovation lab - Presentation session\",\n\"description\": \"descrizione\",\n\"datetimeStart\": \"2021-06-03 14:00:00.000\",\n\"datetimeEnd\": \"2021-06-03 16:00:00.000\",\n\"thumbMediaUrl\": \"https://i.postimg.cc/vZ8bJLLb/image.jpg\",\n\"isActive\": true,\n\"category\": \"Conference\",\n\"location\": {\n    \"title\": \"Aula La Natta\",\n    \"description\": \"Sit cillum exercitation minim Lorem incididunt cupidatat elit consectetur laboris laborum aute commodo. Non amet qui qui occaecat ad do non.\",\n    \"address\": \"Milano Città Studi - Piazza Leonardo da Vinci 32\",\n    \"createdAt\": \"Mon Jun 04 2018 12:20:04 GMT+0000 (UTC)\",\n    \"latitude\": \"72.629555\",\n    \"longitude\": \"103.133334\"\n},\n\"ticketCost\": 0\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://handyappdil.azurewebsites.net/events/",
+					"protocol": "https",
+					"host": [
+						"handyappdil",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"events",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Subscribe to event",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"userId\" : \"02e20bba-5756-4628-aa4c-435913b02cce\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://handyappdil.azurewebsites.net/events/16/subscribe",
+					"protocol": "https",
+					"host": [
+						"handyappdil",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"events",
+						"16",
+						"subscribe"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unsubscribe to event",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \"userId\" : \"02e20bba-5756-4628-aa4c-435913b02cce\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://handyappdil.azurewebsites.net/events/16/unsubscribe",
+					"protocol": "https",
+					"host": [
+						"handyappdil",
+						"azurewebsites",
+						"net"
+					],
+					"path": [
+						"events",
+						"16",
+						"unsubscribe"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

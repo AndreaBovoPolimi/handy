@@ -1,6 +1,6 @@
 # HANDY ecosystem
 
-👋 Hi, here is the #team2 implementation folder about the **Digital Innovation Lab** course at Polimi.
+👋  Hi, here is the #team2 implementation folder about the **Digital Innovation Lab** course at Polimi.
 
 ## Folder Structure
 

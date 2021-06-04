@@ -1,6 +1,6 @@
 # HANDY ecosystem
 
-![Handy Logo](https://postimg.cc/Ty73ddVn)
+![Handy Logo](/handy_app/handy/assets/logo_app.png)
 
 
 👋 Hi, here is the #team2 implementation folder about the **Digital Innovation Lab** course at Polimi.
